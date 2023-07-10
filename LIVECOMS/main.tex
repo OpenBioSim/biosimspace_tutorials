@@ -1,0 +1,264 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% LIVECOMS ARTICLE TEMPLATE FOR BEST PRACTICES GUIDE
+%%% ADAPTED FROM ELIFE ARTICLE TEMPLATE (8/10/2017)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% PREAMBLE
+\documentclass[9pt,tutorial]{livecoms}
+% Use the 'onehalfspacing' option for 1.5 line spacing
+% Use the 'doublespacing' option for 2.0 line spacing
+% Use the 'lineno' option for adding line numbers.
+% Use the "ASAPversion' option following article acceptance to add the DOI and relevant dates to the document footer.
+% Use the 'pubversion' option for adding the citation and publication information to the document footer, when the LiveCoMS issue is finalized.
+% The 'bestpractices' option for indicates that this is a best practices guide.
+% Omit the bestpractices option to remove the marking as a LiveCoMS paper.
+% Please note that these options may affect formatting.
+
+\usepackage{lipsum} % Required to insert dummy text
+\usepackage[version=4]{mhchem}
+\usepackage{siunitx}
+\DeclareSIUnit\Molar{M}
+\usepackage[italic]{mathastext}
+\graphicspath{{figures/}}
+
+%%%%%%%%%% USER INPUT PACKAGES & FUNCTIONS
+\usepackage{listings}
+\lstset{
+	basicstyle=\ttfamily,
+	commentstyle={},
+	breakatwhitespace=true,
+	breaklines=true,
+	language=bash
+}
+\usepackage{pythonhighlight}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% IMPORTANT USER CONFIGURATION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\versionnumber}{1.0}  % you should update the minor version number in preprints and major version number of submissions.
+\newcommand{\githubrepository}{\url{https://github.com/OpenBioSim/BioSimSpaceTutorials}}  %this should be the main github repository for this article
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% ARTICLE SETUP
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{A Suite of Tutorials for the BioSimSpace framework for interoperable biomolecular simulation [Article v\versionnumber]}
+% Everyone in alphabetical order other than Lester
+
+\author[1,2*]{Lester O. Hedges}
+\author[3\authfn{1}]{Sofia Bariami}
+\author[2]{Matthew Burman}
+\author[3]{Finlay Clark}
+\author[4]{Benjamin P. Cossins}
+\author[3]{Adele Hardie}
+\author[3]{Anna M. Herz}
+\author[5]{Dominykas Lukauskis}
+\author[3]{Antonia S.J.S. Mey}
+\author[2,3*]{Julien Michel}
+\author[3\authfn{2}]{Jenke Scheen}
+\author[4]{Miroslav Suruzhon}
+\author[1]{Christopher J. Woods}
+\author[4]{Zhiyi Wu}
+
+%\author[1,2\authfn{1}\authfn{3}]{Firstname Middlename Familyname}
+%\author[2\authfn{1}\authfn{4}]{Firstname Initials Surname}
+%\author[2*]{Firstname Surname}
+\affil[1]{Advanced Computing Research Centre, University of Bristol, UK}
+\affil[2]{OpenBioSim Community Interest Company, UK}
+\affil[3]{EaStCHEM School of
+Chemistry, University of Edinburgh, UK}
+\affil[4]{Exscientia Ltd., Oxford, UK}
+\affil[5]{Department of Chemistry and Institute of Structural and Molecular Biology, University College London, UK}
+
+
+\corr{julien.michel@ed.ac.uk}{JM}  % Correspondence emails.  FMS and FS are the appropriate authors initials.
+\corr{lester@openbiosim.org}{LH}
+
+\orcid{Lester Hedges}{EEEE-FFFF-GGGG-HHHH}
+\orcid{Matthew Burman}{EEEE-FFFF-GGGG-HHHH}
+\orcid{Sofia Bariami}{EEEE-FFFF-GGGG-HHHH}
+\orcid{Finlay Clark}{0000-0003-0474-5475}
+\orcid{Benjamin P. Cossins}{EEEE-FFFF-GGGG-HHHH}
+\orcid{Adele Hardie}{EEEE-FFFF-GGGG-HHHH}
+\orcid{Anna M. Herz}{EEEE-FFFF-GGGG-HHHH}
+\orcid{Dominykas Lukauskis}{EEEE-FFFF-GGGG-HHHH}
+\orcid{Antonia Mey}{0000-0001-7512-5252}
+\orcid{Julien Michel}{0000-0003-0360-1760}
+\orcid{Jenke Scheen}{0000-0001-9781-0445}
+\orcid{Miroslav Suruzhon}{EEEE-FFFF-GGGG-HHHH}
+\orcid{Christopher J Woods}{EEEE-FFFF-GGGG-HHHH}
+\orcid{Zhiyi Wu}{0000-0002-7615-7851}
+
+
+%\contrib[\authfn{1}]{These authors contributed equally to this work}
+%\contrib[\authfn{2}]{These authors also contributed equally to this work}
+
+\presentadd[\authfn{1}]{Cresset Litlington SG8 0SS, Cambridgeshire,
+UK}
+\presentadd[\authfn{2}]{Open Molecular Science Foundation, 200 B Street, Suite F, Davis CA 95616, USA}
+%\presentadd[\authfn{4}]{Department, Institute, Country}
+
+\blurb{This LiveCoMS document is maintained online on GitHub at \githubrepository; to provide feedback, suggestions, or help improve it, please visit the GitHub repository and participate via the issue tracker.}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% PUBLICATION INFORMATION
+%%% Fill out these parameters when available
+%%% These are used when the "pubversion" option is invoked
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pubDOI{10.XXXX/YYYYYYY}
+\pubvolume{<volume>}
+\pubissue{<issue>}
+\pubyear{<year>}
+\articlenum{<number>}
+\datereceived{Day Month Year}
+\dateaccepted{Day Month Year}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% ARTICLE START
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\begin{frontmatter}
+\maketitle
+
+\begin{abstract}
+This tutorial serves as a getting-started guide for BioSimSpace (BSS), an interoperable molecular simulation framework, that allows simulations with different sets of molecular dynamics software packages. This tutorial will cover four main use cases for BioSimSpace. The introductory tutorial introduces the basic structure of BioSimSpace, how to use the API to access functionality, and how to write code for setting up and running standard molecular dynamics simulations. Three advanced use cases of BSS are then provided, describing how to set up and run a funnel metadynamics simulation, steered molecular dynamics in combination with Markov State modeling, and relative or absolute alchemical binding free energy calculations. 
+\end{abstract}
+
+\end{frontmatter}
+
+
+\section{Introduction}
+
+Biosimpace (BSS)~\cite{bss_paper} 
+ (\url{http://openbiosim.biosimspace.org}) is a software that allows the setup, simulation, and analysis of different types of molecular dynamics (MD) simulation methodologies with different software packages. The software provides a common API in Python for the following MD software packages: AMBER~\cite{amber_ref}, GROMACS~\cite{gromacs_ref}, NAMD~\cite{namd}, OpenMM~\cite{Eastman2017} and has built-in analysis of simulation through MDAnalysis~\cite{oliver_beckstein-proc-scipy-2016}, MDTraj~\cite{McGibbon2015MDTraj}, alchemlyb~\cite{oliver_beckstein_2023_7809117}. BSS was originally developed by the academic consortium CCPBioSim  
+ (\url{https://www.ccpbiosim.ac.uk}) and is currently maintained by the OpenBioSim Community Interest Company (\url{https://www.openbiosim.org}). %TODO add more dependencies here. 
+
+\section{Prerequisites and Scope}
+%TODO expand this:
+\subsection{Background knowledge}
+To get the most out of this tutorial the reader should be familiar with Python and how to use Jupyter notebooks. For the introductory set of tutorials a background in biomolecular dynamics simulations is expected,~\cite{Huggins2018} and if you are unfamiliar with this topic the best practices guide on foundations in biomolecular simulations is a good starting point~\cite{Braun2019}. Tutorial 2 on funnel metadynamics expects some background understanding of funnel metadynamics; a good starting point for studying this topic can be found in ref.~\cite{Limongelli2013}. Tutorial 3, expects knowledge on steered MD and Markov state modeling. If you are unfamiliar with these topics Isralewitz \emph{et al.} provide a good introduction to steered MD~\cite{Isralewitz2001} and for more details on how to build MSM you can refer to the pyEMMA tutorial~\cite{Wehmeyer_2019} and a general introduction to the topic by Husic \textit{et al.}~\cite{sMD_Husic-msm}.
+Tutorial 4 covers how to use BSS to run alchemical free energy calculations. The best-practice guide by Mey \textit{et al.} for alchemical free energy calculations provides a broad introduction and overview of this method~\cite{mey2020best}.
+
+\subsection{Software/system requirements and installation}
+
+Unless otherwise mentioned the tutorials have been tested with the following 
+software packages.
+
+\begin{itemize}
+    \item BioSimspace release (2023.3.0 or more recent)  
+    \item Gromacs 2023.1 
+    \item AmberTools 23 
+    \item PLUMED 2.9.0 (required for Tutorials 2 and 3)
+    \item cinnabar 0.3.0 (required for Tutorial 4)
+\end{itemize}
+
+Additionally, the following optional dependencies may be useful for using the MD engine pmemd as a replacement for the slower sander MD engine available with AmberTools.
+
+\begin{itemize}
+    \item Amber 22 (Used in Tutorials 3 and 4)
+\end{itemize}
+
+We recommend following the installation instructions available at \url{https://biosimspace.openbiosim.org/install.html} to install BioSimSpace and all required dependencies. 
+OpenBioSim also provides access to a complete BSS environment with all required dependencies to run the tutorial suite via a free Jupyter Hub server hosted at \url{https://www.openbiosim.org/demos}. Login requires a valid GitHub user account. 
+
+\section{Tutorial suite}
+
+The tutorial suite consists of several Jupyter notebooks and can be found here: \url{https://github.com/OpenBioSim/BioSimSpaceTutorials}. The individual tutorials available in the suite are summarized below, and the reader is encouraged to consult the notebooks for full details.
+
+\subsection{Tutorial 1: Introduction to BioSimSpace}
+\input{LIVECOMS/01_introduction/livecoms.tex}
+
+\subsection{Tutorial 2: Funnel Meta-Dynamics}
+\input{LIVECOMS/02_funnel_metad/livecoms.tex}
+
+\subsection{Tutorial 3: Steered Molecular Dynamics \& Markov State Modeling}
+\input{LIVECOMS/03_steered_md/livecoms.tex}
+
+\subsection{Tutorial 4: Alchemical Free Energy Calculations}
+\input{LIVECOMS/04_fep/livecoms}
+
+%\section{Checklists}
+%Tutorials do not necessarily require the use of a checklist as in Best Practices documents; however, they can include these if desired.
+%Several useful checklist formats are available, with examples presented in \texttt{sample-document.tex} in \url{github.com/livecomsjournal/article_templates/templates}.
+%One example is shown here.
+%
+% Here is a single-column checklist that consists of multiple sub-checklists
+%\begin{Checklists}
+%
+%\begin{checklist}{A list}
+%\textbf{Single-column checklists are also straightforward by removing the asterisk}
+%\begin{itemize}
+%\item First thing let's do an item which breaks across lines to see how that looks
+%\item Also remember
+%\item And finally
+%\end{itemize}
+%\end{checklist}
+
+%\begin{checklist}{Another list}
+%\textbf{This is some further description.}
+%\begin{itemize}
+%\item First thing
+%\item Also remember
+%\item And finally
+%\end{itemize}
+%\end{checklist}
+%
+%\end{Checklists}
+
+\section{Author Contributions}
+%%%%%%%%%%%%%%%%
+% This section mustt describe the actual contributions of
+% author. Since this is an electronic-only journal, there is
+% no length limit when you describe the authors' contributions,
+% so we recommend describing what they actually did rather than
+% simply categorizing them in a small number of
+% predefined roles as might be done in other journals.
+%
+% See the policies ``Policies on Authorship'' section of https://livecoms.github.io
+% for more information on deciding on authorship and author order.
+%%%%%%%%%%%%%%%%
+LH prepared Tutorial 1, DL and LH prepared Tutorial 2, AH and LH prepared Tutorial 3, JS, LH, AH, FC, and JM prepared Tutorial 4, which was built on older tutorial material by AM and SB and on contributions from ZW, MS, and BC. MB and CW reviewed and tested all tutorials and ported the tutorials to a web server. The authors are listed in alphabetical order, with the exception of the first coauthor.
+% We suggest you preserve this comment:
+For a more detailed description of author's contributions,
+see the GitHub issue tracking and changelog at \githubrepository.
+
+\section{Other Contributions}
+%%%%%%%%%%%%%%%
+% You should include all people who have filed issues that were
+% accepted into the paper, or that upon discussion altered what was in the paper.
+% Multiple significant contributions might mean that the contributor
+% should be moved to authorship at the discretion of the a
+%
+% See the policies ``Policies on Authorship'' section of https://livecoms.github.io for
+% more information on deciding on authorship and author order.
+%%%%%%%%%%%%%%%
+Gratitude is expressed to the users of BioSimSpace who have given important feedback over the past years that have influenced the production of our tutorials and documentation. 
+% We suggest you preserve this comment:
+For a more detailed description of contributions from the community and others, see the GitHub issue tracking and changelog at \githubrepository.
+
+\section{Potentially Conflicting Interests}
+%%%%%%%
+%Declare any potentially competing interests, financial or otherwise
+%%%%%%%
+JM is a member of the Scientific Advisory Board of Cresset. 
+
+\section{Funding Information}
+%%%%%%%
+% Authors should acknowledge funding sources here. Reference specific grants.
+%%%%%%%
+JM acknowledges support from an EPSRC standard grant (EP/P022138/1) and from the University of Edinburgh UCB via an EPSRC-Impact Acceleration Account (IAA PIII074).
+
+\section*{Author Information}
+\makeorcid
+
+\bibliography{references}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% APPENDICES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\appendix
+
+
+\end{document}

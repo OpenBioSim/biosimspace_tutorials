@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# The #BSUB lines are interpreted by LSF
+# -------------------------------------
+# LSF job name and queue
+#BSUB -J bss_fun-metaD
+#BSUB -q phase12_slough
+# Output log files
+#BSUB -o output.%J
+#BSUB -e errors.%J
+# Numbers of CPUs
+#BSUB -n 1
+# Resources
+#BSUB -R "rusage[mem=1] span[ptile=8] select[hname!=slhgridap073]"
+# GPU resources
+#BSUB -gpu "num=1:j_exclusive=yes:mode=exclusive_process"
+
+source /home/model/MD-SOFTWARE/BSSenv.bashrc
+
+# set the I/Os
+python parameterise_solvate.py --protein_pdb protein.pdb --ligand_file ligand.mol2
+
+python minimise.py --files solvated.prm7 solvated.rst7
+
+python equilibrate_no_trj.py --files minimised.rst7 minimised.prm7
+
+python fun_metad.py --files equilibrated.rst7 equilibrated.prm7

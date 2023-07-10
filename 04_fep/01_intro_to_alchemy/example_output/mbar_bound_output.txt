@@ -1,0 +1,54 @@
+# Analysing data contained in file(s) ['o_xylene_benzene_for_analysis/bound/lambda_0.0000/simfile.dat', 'o_xylene_benzene_for_analysis/bound/lambda_0.1250/simfile.dat', 'o_xylene_benzene_for_analysis/bound/lambda_0.2500/simfile.dat', 'o_xylene_benzene_for_analysis/bound/lambda_0.3750/simfile.dat', 'o_xylene_benzene_for_analysis/bound/lambda_0.5000/simfile.dat', 'o_xylene_benzene_for_analysis/bound/lambda_0.6250/simfile.dat', 'o_xylene_benzene_for_analysis/bound/lambda_0.7500/simfile.dat', 'o_xylene_benzene_for_analysis/bound/lambda_0.8750/simfile.dat', 'o_xylene_benzene_for_analysis/bound/lambda_1.0000/simfile.dat']
+#Overlap matrix
+0.9653 0.0346 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000
+0.0346 0.8711 0.0937 0.0006 0.0000 0.0000 0.0000 0.0000 0.0000
+0.0000 0.0937 0.7665 0.1387 0.0011 0.0000 0.0000 0.0000 0.0000
+0.0000 0.0006 0.1387 0.7037 0.1558 0.0013 0.0000 0.0000 0.0000
+0.0000 0.0000 0.0011 0.1558 0.7035 0.1390 0.0007 0.0000 0.0000
+0.0000 0.0000 0.0000 0.0013 0.1390 0.7233 0.1358 0.0007 0.0000
+0.0000 0.0000 0.0000 0.0000 0.0007 0.1358 0.7285 0.1346 0.0005
+0.0000 0.0000 0.0000 0.0000 0.0000 0.0007 0.1346 0.7475 0.1172
+0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0005 0.1172 0.8823
+#DG from neighbouring lambda in kcal/mol
+0.0000 0.1250 -3.3726 0.0858
+0.1250 0.2500 -0.5972 0.0486
+0.2500 0.3750 0.6233 0.0375
+0.3750 0.5000 0.8770 0.0344
+0.5000 0.6250 1.0015 0.0374
+0.6250 0.7500 0.8816 0.0381
+0.7500 0.8750 1.0312 0.0384
+0.8750 1.0000 1.2659 0.0422
+#PMF from MBAR in kcal/mol
+0.0000 0.0000 0.0000
+0.1250 -3.3726 0.0858
+0.2500 -3.9697 0.1013
+0.3750 -3.3464 0.1104
+0.5000 -2.4694 0.1179
+0.6250 -1.4679 0.1258
+0.7500 -0.5863 0.1334
+0.8750 0.4449 0.1407
+1.0000 1.7108 0.1487
+#TI average gradients and standard deviation in kcal/mol
+0.0000 -41.4818 22.7248
+0.1250 -13.3982 17.6651
+0.2500 1.6842 14.3815
+0.3750 6.9031 12.3559
+0.5000 7.7999 12.7966
+0.6250 7.0291 13.1364
+0.7500 7.4244 13.1842
+0.8750 8.7508 14.2247
+1.0000 15.3754 13.9575
+#PMF from TI in kcal/mol
+0.0000 0.0000
+0.1250 -3.4300
+0.2500 -4.1621
+0.3750 -3.6254
+0.5000 -2.7065
+0.6250 -1.7797
+0.7500 -0.8763
+0.8750 0.1346
+1.0000 1.6425
+#MBAR free energy difference in kcal/mol: 
+1.710801, 0.148698 
+#TI free energy difference in kcal/mol: 
+1.642510  
