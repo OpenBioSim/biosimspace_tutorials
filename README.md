@@ -9,13 +9,18 @@ These tutorials have been tested with BioSimSpace 2023.3.0 and require the follo
 * cinnabar (tested with 0.3.0)
 * alchemlyb (tested with 2.1.0)
 
+# Installation instructions
+
 We recommend using mamba to install the dependencies. 
 
 ```
+conda install -c conda-forge mamba
 mamba create -n  bsstutorials
 mamba install -n bsstutorials -c openbiosim -c conda-forge biosimspace=2023.3.0 gromacs=2023.1 ambertools=23.3 plumed=2.9.0 cinnabar=0.3.0 alchemlyb=2.1.0
 mamba activate bsstutorials
 ```
+
+# Tutorials suite
 
 * 01 - [Introduction](01_introduction)
 * 02 - [Funnel metadynamics](02_funnel_metad)
