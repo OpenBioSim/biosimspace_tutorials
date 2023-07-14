@@ -41,6 +41,14 @@ You can find the full documentation at [biosimspace.org](https://biosimspace.org
 
 The purpose of the steered MD simulation is to access conformational space that would take a very long time (or be inaccessible altogether) at equilibrium. To generate the data for the Markov State Model, we need to see how the system behaves given some starting conformation. To do this, we will be running seeded MD simulations, where a snapshot from the sMD trajectory is used as a starting point for an equilibrium MD simulation.
 
+Let's download the inputs for the tutorial if necessary
+
+
+```python
+from get_tutorial import download
+download()
+```
+
 Start by importing required libraries:
 
 
@@ -132,10 +140,12 @@ if not os.path.exists(snapshot_dir):
 
 Get frame indices for snapshots. Note that the end point selected is not the end of the simulation, but the end of the steering part.
 
+We have provided an example steered MD trajectory in `data/steering.nc`. For ease of downloading, it has been significantly cut down, with each frame corresponding to 0.5 ns, while it is more common to save trajectories every 5-10 ps. This is reflected in dividing the duration in ns by the frame rate in ns below.
+
 
 ```python
 number_of_snapshots = 100
-end = 150 / 0.005
+end = 150 / 0.5
 frames = np.linspace(0, end, number_of_snapshots, dtype=int)
 ```
 
@@ -149,7 +159,7 @@ columns = ["r1", "t1", "d1"]
 ylabels = ["RMSD/$\AA$", "Dihedral/radians", "Distance/$\AA$"]
 
 for i in range(len(columns)):
-    ax[i].plot(df.index[frames], df.iloc[frames][columns[i]], alpha=0.7)
+    ax[i].plot(df.index[frames]*100, df.iloc[frames][columns[i]], alpha=0.7)
     ax[i].set_ylabel(ylabels[i])
     ax[i].set_xlabel("time/ns")
     ax[i].set_xlim(0, 150)
