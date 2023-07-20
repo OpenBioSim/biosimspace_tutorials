@@ -46,7 +46,7 @@ Let's download the inputs for the tutorial if necessary
 
 ```python
 from get_tutorial import download
-download()
+download("01")
 ```
 
 Start by importing required libraries:
@@ -133,6 +133,7 @@ In this case we will be extracting 100 evenly spaced snapshots to be used as sta
 
 
 ```python
+download("02")
 snapshot_dir = "data"
 if not os.path.exists(snapshot_dir):
     os.mkdir(snapshot_dir)
@@ -169,14 +170,14 @@ fig.tight_layout()
 
 <img src="figures/COLVAR_snapshots.png">
 
-Save each snapshot as a restart file:
+Save each snapshot as a restart file (note: this will take several minutes):
 
 
 ```python
 for i, index in enumerate(frames):
     frame = BSS.Trajectory.getFrame(
-        trajectory="/home/adele/Documents/PTP1B/steering.nc",
-        topology="/home/adele/Documents/PTP1B/system.prm7",
+        trajectory="data/steering.nc",
+        topology="data/system.prm7",
         index=int(index),
     )
     BSS.IO.saveMolecules(f"{snapshot_dir}/snapshot_{i+1}", frame, "rst7")
