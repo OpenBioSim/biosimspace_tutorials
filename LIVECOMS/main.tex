@@ -36,12 +36,12 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newcommand{\versionnumber}{1.0}  % you should update the minor version number in preprints and major version number of submissions.
-\newcommand{\githubrepository}{\url{https://github.com/OpenBioSim/BioSimSpaceTutorials}}  %this should be the main github repository for this article
+\newcommand{\githubrepository}{\url{https://github.com/OpenBioSim/biosimspace_tutorials}}  %this should be the main github repository for this article
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% ARTICLE SETUP
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\title{A Suite of Tutorials for the BioSimSpace framework for interoperable biomolecular simulation [Article v\versionnumber]}
+\title{A suite of tutorials for the BioSimSpace framework for interoperable biomolecular simulation [Article v\versionnumber]}
 % Everyone in alphabetical order other than Lester
 
 \author[1,2*]{Lester O. Hedges}
@@ -66,26 +66,26 @@
 \affil[2]{OpenBioSim Community Interest Company, UK}
 \affil[3]{EaStCHEM School of
 Chemistry, University of Edinburgh, UK}
-\affil[4]{Exscientia Ltd., Oxford, UK}
+\affil[4]{Exscientia Plc., Oxford, UK}
 \affil[5]{Department of Chemistry and Institute of Structural and Molecular Biology, University College London, UK}
 
 
 \corr{julien.michel@ed.ac.uk}{JM}  % Correspondence emails.  FMS and FS are the appropriate authors initials.
 \corr{lester@openbiosim.org}{LH}
 
-\orcid{Lester Hedges}{EEEE-FFFF-GGGG-HHHH}
-\orcid{Matthew Burman}{EEEE-FFFF-GGGG-HHHH}
-\orcid{Sofia Bariami}{EEEE-FFFF-GGGG-HHHH}
+%\orcid{Lester Hedges}{EEEE-FFFF-GGGG-HHHH}
+%\orcid{Matthew Burman}{EEEE-FFFF-GGGG-HHHH}
+\orcid{Sofia Bariami}{0000-0002-5240-7684}
 \orcid{Finlay Clark}{0000-0003-0474-5475}
-\orcid{Benjamin P. Cossins}{EEEE-FFFF-GGGG-HHHH}
-\orcid{Adele Hardie}{EEEE-FFFF-GGGG-HHHH}
-\orcid{Anna M. Herz}{EEEE-FFFF-GGGG-HHHH}
-\orcid{Dominykas Lukauskis}{EEEE-FFFF-GGGG-HHHH}
+%\orcid{Benjamin P. Cossins}{EEEE-FFFF-GGGG-HHHH}
+%\orcid{Adele Hardie}{EEEE-FFFF-GGGG-HHHH}
+\orcid{Anna M. Herz}{0000-0003-2831-6691}
+\orcid{Dominykas Lukauskis}{0000-0002-4999-2691}
 \orcid{Antonia Mey}{0000-0001-7512-5252}
 \orcid{Julien Michel}{0000-0003-0360-1760}
 \orcid{Jenke Scheen}{0000-0001-9781-0445}
-\orcid{Miroslav Suruzhon}{EEEE-FFFF-GGGG-HHHH}
-\orcid{Christopher J Woods}{EEEE-FFFF-GGGG-HHHH}
+\orcid{Miroslav Suruzhon}{0000-0002-6794-1679}
+\orcid{Christopher J Woods}{0000-0001-6563-9903}
 \orcid{Zhiyi Wu}{0000-0002-7615-7851}
 
 
@@ -130,14 +130,14 @@ This tutorial serves as a getting-started guide for BioSimSpace (BSS), an intero
 
 \section{Introduction}
 
-Biosimpace (BSS)~\cite{bss_paper} 
+BioSimSpace (BSS)~\cite{bss_paper} 
  (\url{http://openbiosim.biosimspace.org}) is a software that allows the setup, simulation, and analysis of different types of molecular dynamics (MD) simulation methodologies with different software packages. The software provides a common API in Python for the following MD software packages: AMBER~\cite{amber_ref}, GROMACS~\cite{gromacs_ref}, NAMD~\cite{namd}, OpenMM~\cite{Eastman2017} and has built-in analysis of simulation through MDAnalysis~\cite{oliver_beckstein-proc-scipy-2016}, MDTraj~\cite{McGibbon2015MDTraj}, alchemlyb~\cite{oliver_beckstein_2023_7809117}. BSS was originally developed by the academic consortium CCPBioSim  
  (\url{https://www.ccpbiosim.ac.uk}) and is currently maintained by the OpenBioSim Community Interest Company (\url{https://www.openbiosim.org}). %TODO add more dependencies here. 
 
 \section{Prerequisites and Scope}
 %TODO expand this:
 \subsection{Background knowledge}
-To get the most out of this tutorial the reader should be familiar with Python and how to use Jupyter notebooks. For the introductory set of tutorials a background in biomolecular dynamics simulations is expected,~\cite{Huggins2018} and if you are unfamiliar with this topic the best practices guide on foundations in biomolecular simulations is a good starting point~\cite{Braun2019}. Tutorial 2 on funnel metadynamics expects some background understanding of funnel metadynamics; a good starting point for studying this topic can be found in ref.~\cite{Limongelli2013}. Tutorial 3, expects knowledge on steered MD and Markov state modeling. If you are unfamiliar with these topics Isralewitz \emph{et al.} provide a good introduction to steered MD~\cite{Isralewitz2001} and for more details on how to build MSM you can refer to the pyEMMA tutorial~\cite{Wehmeyer_2019} and a general introduction to the topic by Husic \textit{et al.}~\cite{sMD_Husic-msm}.
+To get the most out of this tutorial the reader should be familiar with Python and how to use Jupyter notebooks. For the introductory set of tutorials a background in biomolecular dynamics simulations is expected,~\cite{Huggins2018} and if you are unfamiliar with this topic the best practices guide on foundations in biomolecular simulations is a good starting point~\cite{Braun2019}. Tutorial 2 on funnel metadynamics expects some background understanding of funnel metadynamics; a good starting point for studying this topic can be found in ref.~\cite{Limongelli2013}. Tutorial 3, expects knowledge on steered MD and Markov state modeling. If you are unfamiliar with these topics Isralewitz \textit{et al.} provides a good introduction to steered MD~\cite{Isralewitz2001} and for more details on how to build MSM you can refer to the pyEMMA tutorial~\cite{Wehmeyer_2019} and a general introduction to the topic by Husic \textit{et al.}~\cite{sMD_Husic-msm}.
 Tutorial 4 covers how to use BSS to run alchemical free energy calculations. The best-practice guide by Mey \textit{et al.} for alchemical free energy calculations provides a broad introduction and overview of this method~\cite{mey2020best}.
 
 \subsection{Software/system requirements and installation}
@@ -146,36 +146,36 @@ Unless otherwise mentioned the tutorials have been tested with the following
 software packages.
 
 \begin{itemize}
-    \item BioSimspace release (2023.3.0 or more recent)  
-    \item Gromacs 2023.1 
-    \item AmberTools 23 
-    \item PLUMED 2.9.0 (required for Tutorials 2 and 3)
-    \item cinnabar 0.3.0 (required for Tutorial 4)
+    \item BioSimSpace release (2023.3.0 or more recent)  \url{https://biosimspace.openbiosim.org}
+    \item Gromacs 2023.1 \url{https://www.gromacs.org/}
+    \item AmberTools 23  \url{https://ambermd.org/AmberTools.php}
+    \item PLUMED 2.9.0 (required for Tutorials 2 and 3) \url{https://www.plumed.org/}
+    \item cinnabar 0.3.0 (required for Tutorial 4) \url{https://github.com/OpenFreeEnergy/Cinnabar} 
 \end{itemize}
 
-Additionally, the following optional dependencies may be useful for using the MD engine pmemd as a replacement for the slower sander MD engine available with AmberTools.
+In addition users that have a Amber22 software licence may wish to use the MD engine pmemd as a replacement for the slower sander MD engine available with AmberTools.
 
 \begin{itemize}
-    \item Amber 22 (Used in Tutorials 3 and 4)
+    \item Amber 22 (Used in Tutorials 3 and 4) \url{https://ambermd.org/AmberMD.php}
 \end{itemize}
 
-We recommend following the installation instructions available at \url{https://biosimspace.openbiosim.org/install.html} to install BioSimSpace and all required dependencies. 
+We recommend following the installation instructions available at \githubrepository to install all the required dependencies.
 OpenBioSim also provides access to a complete BSS environment with all required dependencies to run the tutorial suite via a free Jupyter Hub server hosted at \url{https://www.openbiosim.org/demos}. Login requires a valid GitHub user account. 
 
 \section{Tutorial suite}
 
-The tutorial suite consists of several Jupyter notebooks and can be found here: \url{https://github.com/OpenBioSim/BioSimSpaceTutorials}. The individual tutorials available in the suite are summarized below, and the reader is encouraged to consult the notebooks for full details.
+The tutorial suite consists of several Jupyter notebooks and can be found here: \url{https://github.com/OpenBioSim/biosimspace_tutorials}. The individual tutorials available in the suite are summarized below, and the reader is encouraged to consult the notebooks for full details.
 
 \subsection{Tutorial 1: Introduction to BioSimSpace}
 \input{LIVECOMS/01_introduction/livecoms.tex}
 
-\subsection{Tutorial 2: Funnel Meta-Dynamics}
+\subsection{Tutorial 2: funnel metadynamics}
 \input{LIVECOMS/02_funnel_metad/livecoms.tex}
 
-\subsection{Tutorial 3: Steered Molecular Dynamics \& Markov State Modeling}
+\subsection{Tutorial 3: Steered molecular dynamics \& Markov state modeling}
 \input{LIVECOMS/03_steered_md/livecoms.tex}
 
-\subsection{Tutorial 4: Alchemical Free Energy Calculations}
+\subsection{Tutorial 4: Alchemical free energy calculations}
 \input{LIVECOMS/04_fep/livecoms}
 
 %\section{Checklists}
