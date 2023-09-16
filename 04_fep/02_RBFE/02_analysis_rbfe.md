@@ -541,9 +541,9 @@ Next, we can use this file to instatiate a FEMap object, that we can then use to
 ```python
 network = wrangle.FEMap(f"analysis/outputs/cinnabar_data.csv")
 # plot the perturbations
-plotting.plot_DDGs(network.graph, title="DDGs", filename=f"analysis/outputs/DDGs.png")
+plotting.plot_DDGs(network.graph, title="DDGs", filename=f"analysis/outputs/DDGs.png", figsize=6)
 # plot the ligands
-plotting.plot_DGs(network.graph, title="DGs", filename=f"analysis/outputs/DGs.png")
+plotting.plot_DGs(network.graph, title="DGs", filename=f"analysis/outputs/DGs.png", figsize=6)
 ```
 
 ### 2.1. Outliers
@@ -739,9 +739,9 @@ with open(f"analysis/outputs/cinnabar_data_outliers_removed.csv", "w") as cinnab
 
 network = wrangle.FEMap(f"analysis/outputs/cinnabar_data_outliers_removed.csv")
 # plot the perturbations
-plotting.plot_DDGs(network.graph, title="DDGs", filename=f"analysis/outputs/DDGs_outliers_removed.png")
+plotting.plot_DDGs(network.graph, title="DDGs", filename=f"analysis/outputs/DDGs_outliers_removed.png", figsize=6)
 # plot the ligands
-plotting.plot_DGs(network.graph, title="DGs", filename=f"analysis/outputs/DGs_outliers_removed.png")
+plotting.plot_DGs(network.graph, title="DGs", filename=f"analysis/outputs/DGs_outliers_removed.png", figsize=6)
 ```
 
 </details>
@@ -778,7 +778,7 @@ The best binder based on this data is 'lig_jmc27'. We can visualise this using B
 
 ```python
 
-BSS.Notebook.View("inputs/ligands/analysis_ligands/lig_jmc27.sdf").system()
+BSS.Notebook.View("inputs/ligands/analysis_ligands/jmc_27.sdf").system()
 
 ```
 </details>
