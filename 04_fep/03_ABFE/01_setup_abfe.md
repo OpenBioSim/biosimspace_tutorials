@@ -372,7 +372,9 @@ restrain_fe_calc = BSS.FreeEnergy.AlchemicalFreeEnergy(
 )
 
 # Set up discharging stage
-lam_vals_discharge = [0.000, 0.143, 0.286, 0.429, 0.571, 0.714, 0.857, 1.000]
+# Note that a resonable set of lambda windows would be [0.000, 0.143, 0.286, 0.429, 0.571, 0.714, 0.857, 1.000]
+# but we will use fewer windows to save memory.
+lam_vals_discharge = [0.000, 0.500, 1.000]
 discharge_protocol = BSS.Protocol.FreeEnergy(
     runtime=6 * BSS.Units.Time.nanosecond,
     lam_vals=lam_vals_discharge,
@@ -402,35 +404,17 @@ discharge_fe_calc.run()
 ```
 However, these would take hours to run, so we'll avoid starting them now.
 
-<div class="alert alert-success">
-<b>Exercise 4: Set Up the Vanish Stage Calculations</b>
-</div>
+Setting up calculations is quite memory-intensive. As we have limited resources on the server, we'll avoid setting up any more stages. Below are some examples of how to set up a vanishing stage, how to set up the free leg, and how to set up using GROMACS instead of SOMD.
 
-Now it's your turn: complete the code below to set up the vanish stage calculations for the vanish stage, using SOMD and a 1 fs timestep. Note that a reasonable set of lambda values is:
+<div class="alert alert-success">
+<b>Example: Setting up the vanish stage with a 1 fs timestep</b>
+</div>
 
 ```Python
 lam_vals_vanish = [0.000, 0.025, 0.050, 0.075, 0.100, 0.125, 0.150, 0.175, 0.200, # We need a lot of these to
                    0.225, 0.250, 0.275, 0.300, 0.325, 0.350, 0.375, 0.400, 0.425, # ensure sufficient overlap
                    0.450, 0.475, 0.500, 0.525, 0.550, 0.575, 0.600, 0.625, 0.650, # between windows!
                    0.675, 0.700, 0.725, 0.750, 0.800, 0.850, 0.900, 0.950, 1.000] 
-```
-However, will use an unrealistically small set of lambda values to avoid overloading the kernel.
-
-
-```python
-# Set up the vanish stage
-lam_vals_vanish = [
-    0.000,
-    0.500,
-    1.000,
-]  # Far too few lambda values - this calculation would
-# not provide a reliable free energy estimate
-# FIXME: Complete the code to set up the vanish stage calculations for SOMD with a 1 fs timestep
-```
-
-<details><summary {style='color:green;font-weight:bold'}> Click here to see solution to Exercise. </summary>
-
-```python
 
 vanish_protocol = BSS.Protocol.FreeEnergy(runtime=6*BSS.Units.Time.nanosecond, 
                                           timestep=1*BSS.Units.Time.femtosecond, 
@@ -442,46 +426,14 @@ vanish_fe_calc = BSS.FreeEnergy.AlchemicalFreeEnergy(restraint.system,
                                                      engine='somd', 
                                                      restraint=restraint, 
                                                      work_dir='output/vanish')
-
 ```
-</details>
 
 <div class="alert alert-success">
-<b>Exercise 5: Set up the Free Leg Simulations</b>
+<b>Example: Setting up the free leg</b>
 </div>
-
-Of course, to obtain the overall free energy of binding we must perform the free leg calculations as well, where we discharge and vanish the ligand in a box of water. Set up the free leg simulations using BioSimSpace. You will find the equilibrated input files in input/free_ligand. Examples of realistic $\mathrm{\lambda}$ schedules are:
 
 ```Python
 lam_vals_discharge_free = [0.000, 0.143, 0.286, 0.429, 0.571, 0.714, 0.857, 1.000]
-# Notice that far fewer lambda windows are required than for the bound vanish stage
-lam_vals_vanish_free = [0.000, 0.028, 0.056, 0.111, 0.167, 0.222, 0.278, 0.333, 0.389, 0.444, 
-                        0.500, 0.556, 0.611, 0.667, 0.722, 0.778, 0.889, 1.000]
-```
-
-But again, we will use far fewer to avoid overloading the kernel.
-
-
-```python
-lam_vals_discharge_free = [
-    0.000,
-    0.5000,
-    1.000,
-]  # Far too few windows for actual calculation
-lam_vals_vanish_free = [
-    0.000,
-    0.500,
-    1.000,
-]  # Far too few windows for actual calculation
-
-# FIXME: Set up the free leg simulations
-```
-
-<details><summary {style='color:green;font-weight:bold'}> Click here to see solution to Exercise. </summary>
-
-```python
-# Set up free discharge stage
-lam_vals_discharge_free = [0.000, 0.5000, 1.000] # Far too few windows for actual calculation
 
 free_discharge_protocol = BSS.Protocol.FreeEnergy(runtime=6*BSS.Units.Time.nanosecond, 
                                                   lam_vals=lam_vals_discharge_free, 
@@ -493,8 +445,8 @@ free_discharge_fe_calc = BSS.FreeEnergy.AlchemicalFreeEnergy(restraint.system,
                                                              restraint=restraint,
                                                              work_dir='output/free_discharge')
 
-# Set up the free vanish stage. Notice that far fewer lambda windows are required than for the bound vanish stage
-lam_vals_vanish_free = [0.000, 0.500, 1.000] # Far too few windows for actual calculation
+lam_vals_vanish_free = [0.000, 0.028, 0.056, 0.111, 0.167, 0.222, 0.278, 0.333, 0.389, 0.444, 
+                        0.500, 0.556, 0.611, 0.667, 0.722, 0.778, 0.889, 1.000]
 
 free_vanish_protocol = BSS.Protocol.FreeEnergy(runtime=6*BSS.Units.Time.nanosecond, 
                                                lam_vals=lam_vals_vanish_free,
@@ -506,13 +458,12 @@ free_vanish_fe_calc = BSS.FreeEnergy.AlchemicalFreeEnergy(restraint.system,
                                                           restraint=restraint,
                                                           work_dir='output/free_vanish')
 ```
-</details>
 
 <div class="alert alert-success">
-<b>Exercise 6: Set up the Free Leg Simulations</b>
+<b>Example: Setting up the bound leg with GROMACS</b>
 </div>
 
-Repeat the set up of the bound calculations for GROMACS. Note that the perturbation type must be "full" (restraining, discharging and vanishing carried out in a single simulation) and the lambda values should be supplied as a pandas data frame (because GROMACS allows different lambda values to be specified simultaneously for each stage):
+Note that the perturbation type must be "full" (restraining, discharging and vanishing carried out in a single simulation) and the lambda values should be supplied as a pandas data frame (because GROMACS allows different lambda values to be specified simultaneously for each stage):
 
 ```Python
 lam_vals=pd.DataFrame(data={'bonded': [0.0, ... 1.0],
@@ -542,24 +493,8 @@ gromacs_lam_vals=pd.DataFrame(
                                0.8, 0.85, 0.9, 0.95, 1.0]}
                          )
 ```
-But as usual, we will use fewer.
-
-
-```python
-import pandas as pd
-
-# Use a reduced set of lambda values
-gromacs_lam_vals = pd.DataFrame(
-    data={"bonded": [0.0, 1.0, 1.0], "coul": [0.0, 1.0, 1.0], "vdw": [0.0, 0.5, 1.0]}
-)
-
-# FIXME: Set up the bound simulations for GROMACS
-```
-
-<details><summary {style='color:green;font-weight:bold'}> Click here to see solution to Exercise. </summary>
-
-```python
-# The initial value of lambda
+The code to set up the bound leg is then:
+```Python
 initial_lam=pd.Series(data={'bonded': 0.0, 'coul': 0.0, 'vdw': 0.0})
                          
 gromacs_protocol = BSS.Protocol.FreeEnergy(runtime=6*BSS.Units.Time.nanosecond, 
@@ -571,9 +506,7 @@ gromacs_fe_calc = BSS.FreeEnergy.AlchemicalFreeEnergy(restraint.system,
                                                       gromacs_protocol, 
                                                       engine='gromacs', restraint=restraint, 
                                                       work_dir='output/gromacs')
-
 ```
-</details>
 
 ### 2.7 Running the ABFE Calculations
 <a id="running"></a>
