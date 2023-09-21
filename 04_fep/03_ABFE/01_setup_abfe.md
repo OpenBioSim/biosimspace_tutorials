@@ -347,7 +347,7 @@ An example overlap matrix (discharge stage of the bound leg) for the final set o
 
 The first off-diagonal terms are sufficiently large (much greater than the [empirical cut-off of 0.03](https://link.springer.com/article/10.1007/s10822-015-9840-9)), indicating good overlap and giving us some confidence that the MBAR estimate will be reliable.
 
-Note that initially, the output directory does not contain "restrain" and "discharge" directories:
+Note that initially, the output directory does not contain a "restrain" directory:
 
 
 ```python
@@ -371,12 +371,35 @@ restrain_fe_calc = BSS.FreeEnergy.AlchemicalFreeEnergy(
     work_dir="output/restrain",
 )
 
-# Set up discharging stage
-# Note that a resonable set of lambda windows would be [0.000, 0.143, 0.286, 0.429, 0.571, 0.714, 0.857, 1.000]
-# but we will use fewer windows to save memory.
-lam_vals_discharge = [0.000, 0.500, 1.000]
+```
+
+BioSimSpace has set up the required `work_dir`s for the restrain stage, and all the files needed to run the simulation should have been set up. Have a look!
+
+
+```python
+! ls output
+```
+
+We could run the restrain stage simulations using:
+
+```Python
+restrain_fe_calc.run()
+```
+However, these would take hours to run, so we'll avoid starting them now.
+
+Setting up calculations is quite memory-intensive. As we have limited resources on the server, we'll avoid setting up any more stages. Below are some examples of how to set up a the remaining stages for the bound leg (discharging and vanishing stages), how to set up the free leg, and how to set up using GROMACS instead of SOMD.
+
+<div class="alert alert-success">
+<b>Example: Setting up the bound leg discharge and vanish stages with a 1 fs timestep</b>
+</div>
+
+```Python
+# Set up discharge stage
+lam_vals_discharge = [0.000, 0.143, 0.286, 0.429, 0.571, 0.714, 0.857, 1.000]
+
 discharge_protocol = BSS.Protocol.FreeEnergy(
     runtime=6 * BSS.Units.Time.nanosecond,
+    timestep=1*BSS.Units.Time.femtosecond, 
     lam_vals=lam_vals_discharge,
     perturbation_type="discharge_soft",
 )
@@ -387,30 +410,8 @@ discharge_fe_calc = BSS.FreeEnergy.AlchemicalFreeEnergy(
     restraint=restraint,
     work_dir="output/discharge",
 )
-```
 
-BioSimSpace has set up the required `work_dir`s for each stage of the calculation, and all the files needed to run the simulation should have been set up. Have a look!
-
-
-```python
-! ls output
-```
-
-We could run the simulations using:
-
-```Python
-restrain_fe_calc.run()
-discharge_fe_calc.run()
-```
-However, these would take hours to run, so we'll avoid starting them now.
-
-Setting up calculations is quite memory-intensive. As we have limited resources on the server, we'll avoid setting up any more stages. Below are some examples of how to set up a vanishing stage, how to set up the free leg, and how to set up using GROMACS instead of SOMD.
-
-<div class="alert alert-success">
-<b>Example: Setting up the vanish stage with a 1 fs timestep</b>
-</div>
-
-```Python
+# Set up vanish stage
 lam_vals_vanish = [0.000, 0.025, 0.050, 0.075, 0.100, 0.125, 0.150, 0.175, 0.200, # We need a lot of these to
                    0.225, 0.250, 0.275, 0.300, 0.325, 0.350, 0.375, 0.400, 0.425, # ensure sufficient overlap
                    0.450, 0.475, 0.500, 0.525, 0.550, 0.575, 0.600, 0.625, 0.650, # between windows!
