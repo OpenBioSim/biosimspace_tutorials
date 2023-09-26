@@ -19,8 +19,8 @@ This route can be used to install the tutorials on a computer.
 We recommend using mamba to install the dependencies. 
 
 ```
+conda create -n  bsstutorials "python<3.11"
 conda install -c conda-forge mamba
-mamba create -n  bsstutorials
 mamba install -n bsstutorials -c openbiosim -c conda-forge biosimspace=2023.3.0 gromacs=2023.1 ambertools=23.3 plumed=2.9.0 cinnabar=0.3.0 pymbar=3 alchemlyb=1.0.1
 mamba activate bsstutorials
 ```
