@@ -47,6 +47,8 @@ A particular sandpit, S, can be imported as `import BioSimSpace.Sandpit.S as BSS
 
 ```python
 import BioSimSpace.Sandpit.Exscientia as BSS
+import numpy as np
+import pandas as pd
 ```
 
 As an example of an experimental feature, we will show how to use the alchemical absolute binding free energy functionality present in `BioSimSpace.Sandpit.Exscientia`, which we are working on in collaboration with Exscientia. This will eventually be merged into the main code.
@@ -210,19 +212,27 @@ traj = BSS.Trajectory.Trajectory(
 
 # Search for the optimal Boresch restraints
 restraint = BSS.FreeEnergy.RestraintSearch.analyse(
-    "output/restraint_search",
-    system,
-    traj,
-    298 * BSS.Units.Temperature.kelvin,
+    work_dir = "output/restraint_search",
+    system = system,
+    traj = traj,
+    temperature = 298 * BSS.Units.Temperature.kelvin,
     method="BSS",
+    restraint_type = "Boresch",
 )
+```
+
+
+```python
+restraint
 ```
 
 Here we use the inbuilt BioSimSpace method to perform the restraint search. 
 
 In this algorithm candidate sets of Boresch restraints are generated and the fluctuations of the associated Boresch degrees of freedom are tracked over the unrestrained simulation. The optimum Boresch degrees of freedom are then selected based on minimum configurational volume accessible to the restrained non-interacting ligand, and the force constants are calculated to mimic the native protein-ligand interactions. Likely stability of the restraints is assessed by ensuring that the restraints impose an energy penalty of at least 10 $k_\mathrm{B}T$ for unstable anchor point geometries. See S6 and S7 [here](https://ndownloader.figstatic.com/files/41107959) for a discussion of some of these points.
 
-It's always a good idea to check the distributions of the Boresch degrees of freedom over the course of the simulations and their values against simulation time. Check the output directory to see the plots.
+As well as Boresch restraints, BioSimSpace supports using [multiple distance restraints](https://pubs.acs.org/doi/full/10.1021/acs.jctc.3c00139) for ABFE calculations with both SOMD and GROMACS - simply set `restraint_type = "multiple_distance"` in `RestraintSearch.analyse`. Note that you'll have to specify `method = "numerical` when runnning `restraint.getCorrection` and you'll need to run an extra calculation stage to release all but one restraint after decoupling the ligand. Examples of how to set up ABFE calculations for both Boresch and multiple distance restraints are given at the end of this notebook for both GROMACS and SOMD.
+
+It's always a good idea to check the distributions of the restrained degrees of freedom over the course of the simulations and their values against simulation time. Check the output directory to see the plots.
  
 <div class="alert alert-success">
 <b>Exercise 1: Issues with Restraint Selection</b>
@@ -507,6 +517,101 @@ gromacs_fe_calc = BSS.FreeEnergy.AlchemicalFreeEnergy(restraint.system,
                                                       gromacs_protocol, 
                                                       engine='gromacs', restraint=restraint, 
                                                       work_dir='output/gromacs')
+```
+
+<div class="alert alert-success">
+<b>Example: Setting up the bound leg with GROMACS using multiple distance restraints</b>
+</div>
+
+The two main differences when using multiple distance restraints compared to Boresch restraints with GROMACS are a) the restraint strenght is scaled with `restraint` lambda, rather than `bonded` lambda, and b) we need to run a seperate "release_restraint" stage, where we calculate the free energy change for turning off all but one of the distance restraints. This is because we cannot calculate the entropic correction for releasing multiple distance restraints without simulation, but we can easily calculate this for a single distance restraint. It should also be noted that the "release_restraint" stage is effectively run in the opposite direction to the other states (lambda 0 - > 1 turns on the restraints, but we want the free energy of turning off the restraints), so the sign of the free energy change need to be reversed before being added to the "full" stage free energy change. An example of how to set up these stages is given below:
+
+```Python
+
+# First, set up the "full" stage, as above. During this stage,
+# we turn on the restraints with the ligand interacting, discharge
+# the ligand, and vanish the ligand.
+initial_lam_full=pd.Series(data={'restraint': 0.0, 'coul': 0.0, 'vdw': 0.0})
+full_stage_lam_vals=pd.DataFrame(
+                data={'restraint': [0.0, 0.01, 0.025, 0.05, 0.075, 0.1, 0.2, 
+                                    0.35, 0.5, 0.75, 1.0, 1.0, 1.0, 1.0, 1.0,
+                                    1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 
+                                    1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+                      'coul': [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                               0.0, 0.0, 0.16, 0.33, 0.5, 0.67, 0.83, 1.0,
+                               1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
+                               1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+                      'vdw':  [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                               0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1, 
+                               0.2, 0.3, 0.4, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75,
+                               0.8, 0.85, 0.9, 0.95, 1.0]}
+                         )
+
+gromacs_full_protocol = BSS.Protocol.FreeEnergy(runtime=6*BSS.Units.Time.nanosecond, 
+                                                lam=initial_lam_full,
+                                                lam_vals=full_stage_lam_vals, 
+                                                perturbation_type="full")
+
+# Make sure that you have created a multiple distance restraint object.
+gromacs_full_stage = BSS.FreeEnergy.AlchemicalFreeEnergy(restraint.system, 
+                                                         gromacs_full_protocol,
+                                                         engine='gromacs', restraint=multiple_distance_restraint,
+                                                         work_dir='output/gromacs_mdr_full')
+
+# Now, we set up the "release_restraint" stage. This involves releasing all but one of the
+# distance restraints while the ligand is decoupled.
+initial_lam_release_restraint=pd.Series(data={'restraint': 0.0, 'coul': 1.0, 'vdw': 1.0})
+
+# It is recommended scale lambda^5 to smoothen the removal of the harmonic bonds. This is
+# done automatically by SOMD, but not by GROMACS. The coul and wdw lambdas are set to 1.0
+# at all times to keep the ligand decoupled.
+release_restraint_stage_lam_vals=pd.DataFrame(
+                data={
+                       "restraint": [x**5 for x in np.linspace(0.0, 1.0, 10)],
+                       "coul": [1.0 for _ in range(10)],
+                       "vdw": [1.0 for _ in range(10)],
+                    }
+                )
+
+gromacs_release_restraint_protocol = BSS.Protocol.FreeEnergy(runtime=6*BSS.Units.Time.nanosecond, 
+                                                lam=initial_lam_release_restraint,
+                                                lam_vals=release_restraint_stage_lam_vals,
+                                                perturbation_type="release_restraint")
+
+# Make sure that you have created a multiple distance restraint object.
+gromacs_full_stage = BSS.FreeEnergy.AlchemicalFreeEnergy(restraint.system, 
+                                                         gromacs_release_restraint_protocol,
+                                                         engine='gromacs', restraint=multiple_distance_restraint,
+                                                         work_dir='output/gromacs_mdr_release_restraint')
+
+# The free energy change of releasing the final remaining distance restraint can then be calculated
+# without simulation.
+print(f"Correction for releasing the final distance restraint: {multiple_distance_restraint.getCorrection(method='numerical')}")
+
+# The free energy change of releasing the final remaining distance restraint can then be calculated
+# without simulation.
+print(f"Correction for releasing the final distance restraint: {multiple_distance_restraint.getCorrection(method='numerical')}")
+
+```
+<div class="alert alert-success">
+<b>Example: Setting up the bound leg with SOMD using multiple distance restraints</b>
+</div>
+
+An ABFE calculation with SOMD using multiple distance restraints can be set up in the same way as for Boresch restraints, except we need to add an extra stage where we release all but one of the restraints, as discussed above. The additional "restraint_restraint" stage can be set up as shown below:
+
+```Python
+
+lam_vals_release_restraint = [0.000, 0.100, 0.200, 0.300, 0.400, 0.500, 0.600, 0.700, 0.800, 0.900, 1.000]
+
+release_restraints_protocol = BSS.Protocol.FreeEnergy(runtime=6*BSS.Units.Time.nanosecond, 
+                                                      timestep=1*BSS.Units.Time.femtosecond, 
+                                                      lam_vals=lam_vals_release_restraint, 
+                                                      perturbation_type="release_restraint")
+
+release_restraints_fe_calc = BSS.FreeEnergy.AlchemicalFreeEnergy(restraint.system, 
+                                                                 release_restraints_protocol, 
+                                                                 engine='somd', 
+                                                                 restraint=multiple_distance_restraint,
+                                                                 work_dir='output/release_restraint')
 ```
 
 ### 2.7 Running the ABFE Calculations
