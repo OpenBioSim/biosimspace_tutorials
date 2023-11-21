@@ -67,7 +67,7 @@ Let's download the inputs for the tutorial if necessary
 
 ```python
 from get_tutorial import download
-download()
+download("01")
 ```
 
 #### Setting up the system
@@ -82,11 +82,6 @@ from shutil import copyfile
 ```
 
 Load a system with BioSimSpace. This particular system is of PTP1B with the WPD loop open (from PDB entry 2HNP) and has been minimised and equilibrated.
-
-
-```python
-!tar -xvf data.tar.bz2
-```
 
 
 ```python
@@ -173,8 +168,7 @@ We have previously created a protocol for sMD, so all that is needed is to plug 
 ```python
 process = BSS.Process.Gromacs(
     system,
-    protocol,
-)
+    protocol)
 ```
 
 We can have a look at the command arguments that will be used to run this simulation:
@@ -188,13 +182,12 @@ The argument `-plumed plumed.dat` tells GROMACS to use PLUMED, looking at the `p
 
 #### Steered MD in AMBER
 
-Just as with GROMACS, we simply need to create a process in AMBER (note specifying the use of pmemd.cuda):
+Just as with GROMACS, we simply need to create a process in AMBER. If you have access to pmemd.cuda use of this engine can be specified by passing the keyword argument exe=f'{os.environ["AMBERHOME"]}/bin/pmemd.cuda'.
 
 
 ```python
 process = BSS.Process.Amber(
-    system, protocol, exe=f'{os.environ["AMBERHOME"]}/bin/pmemd.cuda'
-)
+    system, protocol)
 ```
 
 Check the configuration of the process:
@@ -307,9 +300,9 @@ protocol = BSS.Protocol.Steering(
 
 
 ```python
+# pass exe=f'{os.environ["AMBERHOME"]}/bin/pmemd.cuda to use the faster MD engine pmemd
 process = BSS.Process.Amber(
-    system, protocol, exe=f'{os.environ["AMBERHOME"]}/bin/pmemd.cuda'
-)
+    system, protocol)
 ```
 
 We can check the contents of the PLUMED file that BioSimSpace has created:
