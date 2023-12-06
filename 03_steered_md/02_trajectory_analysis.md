@@ -22,7 +22,8 @@ This notebook covers analysing sMD trajectories after the run has finished.
 2. [Plot steering output](#plotting)<br>
     2.1 [Successful steering](#success)<br>
     2.2 [Failed steering](#failed)     
-3. [Extract snapshots](#snapshots)   
+3. [Extract snapshots](#snapshots)
+4. [Example application - Markov State Modelling](#msm)
    
     
 ### Further reading for this topic
@@ -39,7 +40,7 @@ You can find the full documentation at [biosimspace.org](https://biosimspace.org
 ## 1. Introduction
 <div id="intro">
 
-The purpose of the steered MD simulation is to access conformational space that would take a very long time (or be inaccessible altogether) at equilibrium. To generate the data for the Markov State Model, we need to see how the system behaves given some starting conformation. To do this, we will be running seeded MD simulations, where a snapshot from the sMD trajectory is used as a starting point for an equilibrium MD simulation.
+The purpose of the steered MD simulation is to access conformational space that would take a very long time (or be inaccessible altogether) at equilibrium. We can check whether the desired conformational change occured by analysing the output CV data.
 
 Let's download the inputs for the tutorial if necessary
 
@@ -187,8 +188,11 @@ These .rst7 files are to be used as starting points for 100 individual 50 ns sim
 
 <div class="alert alert-info"><b>Note:</b> Since the .rst7 files are of the original system, the same topology is reused throughout</div>
 
-There is a lot to consider when building MSMs, and the method is not covered in this tutorial. Here the python library [PyEMMA](http://emma-project.org/latest/) was used, which has extensive examples and documentation. The integration of sMD in this allosteric modulation prediction workflow is illustrated below:
+## 4. Example application - Markov State Modelling
+<div id="msm">
+
+There are multiple potential applications, such as studying membrane permeability or ligand residence time. Here we briefly highlight one application of sMD simulations enabled by BioSimSpace in the AMMo software project. AMMo ("Allostery in Markov Models") was developed to evaluate the allosteric effects of protein mutations or ligand binding by combining sMD with Markov State Models (MSMs). AMMo uses the Python library \href{http://emma-project.org/latest/}{PyEMMA} was to implement MSMs. The integration of sMD in this allosteric modulation prediction workflow is illustrated below:
 
 <img src="figures/ensemble-md-protocol.png" width=400>
 
-[Hardie *et al*](https://www.nature.com/articles/s42004-023-00926-1) report a detailed study of allosteric modulators of PTP1B using this sMD/MSM methodology.
+[Hardie *et al*](https://www.nature.com/articles/s42004-023-00926-1) report a detailed study of allosteric modulators of PTP1B using this sMD/MSM methodology with notebooks for the PTP1B case study available on [GitHub](https://github.com/michellab/AMMo/tree/main/examples/PTP1B).
