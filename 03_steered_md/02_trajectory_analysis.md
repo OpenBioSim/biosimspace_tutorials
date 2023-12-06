@@ -191,8 +191,8 @@ These .rst7 files are to be used as starting points for 100 individual 50 ns sim
 ## 4. Example application - Markov State Modelling
 <div id="msm">
 
-There are multiple potential applications, such as studying membrane permeability or ligand residence time. Another use is for the additional exploration of conformational space for predicting allosteric modulation using Markov State Models (MSMs). There is a lot to consider when building MSMs, and the method is not covered in this tutorial. Here the python library [PyEMMA](http://emma-project.org/latest/) was used, which has extensive examples and documentation. The integration of sMD in this allosteric modulation prediction workflow is illustrated below:
+There are multiple potential applications, such as studying membrane permeability or ligand residence time. Here we briefly highlight one application of sMD simulations enabled by BioSimSpace in the AMMo software project. AMMo ("Allostery in Markov Models") was developed to evaluate the allosteric effects of protein mutations or ligand binding by combining sMD with Markov State Models (MSMs). AMMo uses the Python library \href{http://emma-project.org/latest/}{PyEMMA} was to implement MSMs. The integration of sMD in this allosteric modulation prediction workflow is illustrated below:
 
 <img src="figures/ensemble-md-protocol.png" width=400>
 
-[Hardie *et al*](https://www.nature.com/articles/s42004-023-00926-1) report a detailed study of allosteric modulators of PTP1B using this sMD/MSM methodology with notebooks for the PTP1B case study available on [GitHub](https://github.com/michellab/AMMo/tree/main/examples/example_ptp1b).
+[Hardie *et al*](https://www.nature.com/articles/s42004-023-00926-1) report a detailed study of allosteric modulators of PTP1B using this sMD/MSM methodology with notebooks for the PTP1B case study available on [GitHub](https://github.com/michellab/AMMo/tree/main/examples/PTP1B).
