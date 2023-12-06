@@ -22,7 +22,7 @@ Unfortunately, many tools do a poor job in preparing PDB files, e.g. having quir
 
 If pre-processing of the PDB file is required, then we recommend using one of the following third-party tools:
 
-* [pdb4amber](https://github.com/Amber-MD/pdb4amber)
+* [pdb4amber](https://ambermd.org/tutorials/basic/tutorial9/index.php)
 * [PDBFixer](https://htmlpreview.github.io/?https://github.com/openmm/pdbfixer/blob/master/Manual.html)
 
 When present, we do provide rudimentary support for `pdb4amber` via the `BioSimSpace.IO.reaadPDB` function, where passing the `pdb4amber=True` argument will pre-process the file with `pdb4amber` prior to creating a molecular system. However, we choose only to support the _default_ options, since many are experimental and have can have undesirable knock-on effects, e.g. using the `--add-missing-atoms` option strips all chain identifiers from the molecule.
