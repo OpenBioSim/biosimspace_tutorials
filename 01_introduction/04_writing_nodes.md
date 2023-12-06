@@ -80,7 +80,7 @@ AMBER: [ala.crd](https://raw.githubusercontent.com/michellab/BioSimSpace/devel/d
 GROMACS: [kigaki.gro](https://raw.githubusercontent.com/michellab/BioSimSpace/devel/demo/gromacs/kigaki/kigaki.gro), [kigaki.top](https://raw.githubusercontent.com/michellab/BioSimSpace/devel/demo/gromacs/kigaki/kigaki.top)
 
 
-When uploading files the name of the current file(s) will replace the `Upload` button. If you need to change the file, simply click on the button again and choose a new file.
+When uploading files the name of the current file(s) will replace the `Upload` button. If you need to change the file, simply click on the button again and choose a new file. Note that both input files should be loaded at the same time.
 
 
 ```python
