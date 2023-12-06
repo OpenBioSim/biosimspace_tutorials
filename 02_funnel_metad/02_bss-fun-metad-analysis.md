@@ -164,7 +164,7 @@ BSS.Notebook.plot(estimates_list)
 
 ### Part 3.6 - Multiple repeats
 
-We can see from the plot above that the free energy estimate still fluctuates quite a lot. In practice, I have seen that often you need around 1 microsecond-long simulations to converge the free energy. The estimate never completely plateaus, just oscillates within a 1 kcal/mol range.
+We can see from the plot above that the free energy estimate still fluctuates quite a lot. The estimate never completely plateaus, just oscillates within a 1 kcal/mol range.
 
 In order to get a good error estimate, you should do multiple independent simulations. I've provided the data for 5 repeats. Let's plot them all together, while also estimating the mean of the 5 repeats at each timepoint.
 
