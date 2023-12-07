@@ -570,7 +570,7 @@ Like most things in BioSimSpace, the `Trajectory` class is simply a wrapper arou
 
 
 ```python
-mdtraj = traj.getTrajectory()
+mdtraj = traj.getTrajectory(format="mdtraj")
 type(mdtraj)
 ```
 
