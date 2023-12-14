@@ -3,7 +3,7 @@
 %%% ADAPTED FROM ELIFE ARTICLE TEMPLATE (8/10/2017)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% PREAMBLE
-\documentclass[9pt,tutorial]{livecoms}
+\documentclass[9pt,tutorial,pubversion]{livecoms}
 % Use the 'onehalfspacing' option for 1.5 line spacing
 % Use the 'doublespacing' option for 2.0 line spacing
 % Use the 'lineno' option for adding line numbers.
@@ -41,7 +41,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% ARTICLE SETUP
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\title{A suite of tutorials for the BioSimSpace framework for interoperable biomolecular simulation [Article v\versionnumber]}
+\title{A Suite of Tutorials for the BioSimSpace Framework for Interoperable Biomolecular Simulation [Article v\versionnumber]}
 % Everyone in alphabetical order other than Lester
 
 \author[1,2*]{Lester O. Hedges}
@@ -73,12 +73,12 @@ Chemistry, University of Edinburgh, UK}
 \corr{julien.michel@ed.ac.uk}{JM}  % Correspondence emails.  FMS and FS are the appropriate authors initials.
 \corr{lester@openbiosim.org}{LH}
 
-%\orcid{Lester Hedges}{EEEE-FFFF-GGGG-HHHH}
-%\orcid{Matthew Burman}{EEEE-FFFF-GGGG-HHHH}
+\orcid{Lester Hedges}{0000-0002-5624-0500}
+\orcid{Matthew Burman}{0000-0001-5360-0024}
 \orcid{Sofia Bariami}{0000-0002-5240-7684}
 \orcid{Finlay Clark}{0000-0003-0474-5475}
-%\orcid{Benjamin P. Cossins}{EEEE-FFFF-GGGG-HHHH}
-%\orcid{Adele Hardie}{EEEE-FFFF-GGGG-HHHH}
+\orcid{Benjamin P. Cossins}{0000-0002-6699-8833}
+\orcid{Adele Hardie}{0009-0002-9943-9920}
 \orcid{Anna M. Herz}{0000-0003-2831-6691}
 \orcid{Dominykas Lukauskis}{0000-0002-4999-2691}
 \orcid{Antonia Mey}{0000-0001-7512-5252}
@@ -104,13 +104,13 @@ UK}
 %%% Fill out these parameters when available
 %%% These are used when the "pubversion" option is invoked
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\pubDOI{10.XXXX/YYYYYYY}
-\pubvolume{<volume>}
-\pubissue{<issue>}
-\pubyear{<year>}
-\articlenum{<number>}
-\datereceived{Day Month Year}
-\dateaccepted{Day Month Year}
+\pubDOI{10.33011/livecoms.5.1.2375}
+\pubvolume{5}
+\pubissue{1}
+\pubyear{2023}
+\articlenum{2375}
+\datereceived{20 July 2023}
+\dateaccepted{13 December 2023}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% ARTICLE START
@@ -122,7 +122,7 @@ UK}
 \maketitle
 
 \begin{abstract}
-This tutorial serves as a getting-started guide for BioSimSpace (BSS), an interoperable molecular simulation framework, that allows simulations with different sets of molecular dynamics software packages. This tutorial will cover four main use cases for BioSimSpace. The introductory tutorial introduces the basic structure of BioSimSpace, how to use the API to access functionality, and how to write code for setting up and running standard molecular dynamics simulations. Three advanced use cases of BSS are then provided, describing how to set up and run a funnel metadynamics simulation, steered molecular dynamics in combination with Markov State modeling, and relative or absolute alchemical binding free energy calculations. 
+This tutorial serves as a getting-started guide for BioSimSpace (BSS), an interoperable molecular simulation framework, that allows simulations with different sets of molecular dynamics software packages. This tutorial will cover four main use cases for BioSimSpace. The introductory tutorial introduces the basic structure of BioSimSpace, how to use the API to access functionality, and how to write code for setting up and running standard molecular dynamics simulations. Three advanced use cases of BSS are then provided, describing how to set up and run a funnel metadynamics simulation, steered molecular dynamics, and relative or absolute alchemical binding free energy calculations. 
 \end{abstract}
 
 \end{frontmatter}
@@ -137,8 +137,7 @@ BioSimSpace (BSS)~\cite{bss_paper}
 \section{Prerequisites and Scope}
 %TODO expand this:
 \subsection{Background knowledge}
-To get the most out of this tutorial the reader should be familiar with Python and how to use Jupyter notebooks. For the introductory set of tutorials a background in biomolecular dynamics simulations is expected,~\cite{Huggins2018} and if you are unfamiliar with this topic the best practices guide on foundations in biomolecular simulations is a good starting point~\cite{Braun2019}. Tutorial 2 on funnel metadynamics expects some background understanding of funnel metadynamics; a good starting point for studying this topic can be found in ref.~\cite{Limongelli2013}. Tutorial 3, expects knowledge on steered MD and Markov state modeling. If you are unfamiliar with these topics Isralewitz \textit{et al.} provides a good introduction to steered MD~\cite{Isralewitz2001} and for more details on how to build MSM you can refer to the pyEMMA tutorial~\cite{Wehmeyer_2019} and a general introduction to the topic by Husic \textit{et al.}~\cite{sMD_Husic-msm}.
-Tutorial 4 covers how to use BSS to run alchemical free energy calculations. The best-practice guide by Mey \textit{et al.} for alchemical free energy calculations provides a broad introduction and overview of this method~\cite{mey2020best}.
+To get the most out of this tutorial the reader should have at least Intermediate proficiency in Python and be familiar with Jupyter notebooks. For the introductory set of tutorials a background in biomolecular dynamics simulations is expected~\cite{Huggins2018}, and if you are unfamiliar with this topic the best practices guide on foundations in biomolecular simulations is a good starting point~\cite{Braun2019}. Tutorial 2 on funnel metadynamics expects some background understanding of funnel metadynamics; a good starting point for studying this topic can be found in ref~\cite{Limongelli2013}. Tutorial 3, expects knowledge on steered MD and collective variables (CVs). If you are unfamiliar with these topics Isralewitz et al. provides a good introduction to steered MD~\cite{Isralewitz2001}, while a chapter in \textit{Biomolecular Simulations} by Bussi and Tribello gives a practical overview on how CVs are used by PLUMED\cite{Bussi2019}. Tutorial 4 covers how to use BSS to run alchemical free energy calculations. The best-practice guide by Mey et al. for alchemical free energy calculations provides a broad introduction and overview of this method~\cite{mey2020best}.
 
 \subsection{Software/system requirements and installation}
 
@@ -172,7 +171,7 @@ The tutorial suite consists of several Jupyter notebooks and can be found here: 
 \subsection{Tutorial 2: funnel metadynamics}
 \input{LIVECOMS/02_funnel_metad/livecoms.tex}
 
-\subsection{Tutorial 3: Steered molecular dynamics \& Markov state modeling}
+\subsection{Tutorial 3: Steered molecular dynamics}
 \input{LIVECOMS/03_steered_md/livecoms.tex}
 
 \subsection{Tutorial 4: Alchemical free energy calculations}
