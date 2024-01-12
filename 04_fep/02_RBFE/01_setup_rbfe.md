@@ -18,7 +18,7 @@ See [README.md](https://github.com/michellab/BioSimSpaceTutorials/blob/main/04_f
     - this should include basic knowledge of the principles behind RBFE
 
 ### Learning Objectives
- - Setup an FEP pipeline using BioSimSpace and SOMD.
+ - Setup an FEP pipeline using BioSimSpace and SOMD or SOMD2.
  - Understanding the scripts for running the pipeline on a cluster.
 
 ### Table of Contents
@@ -215,11 +215,16 @@ node.addInput(
     ),
 )
 
+# add SOMD2 as an FEP engine option
+fep_engines = [e.upper() for e in BSS.FreeEnergy.engines()]
+if "SOMD2" not in fep_engines:
+    fep_engines.append("SOMD2")
+
 node.addInput(
     "FEP Engine",
     BSS.Gateway.String(
         help="Engine to run FEP with.",
-        allowed=[e.upper() for e in BSS.FreeEnergy.engines()],
+        allowed=fep_engines,
         default="SOMD",
     ),
 )
