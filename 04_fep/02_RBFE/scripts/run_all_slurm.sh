@@ -3,15 +3,15 @@
 # Run all the lig prep, FEP prep, and the production runs
 
 # TODO set the main directory filepath, make sure BSS branch and engines are sourced correctly, replace all XXX
-export MAINDIRECTORY="/home/akalpokas/simulations/somd2/test_biosimspace_tutorials_update/"                             # Set file path ; this should be the absolute file path to the main folder
+export MAINDIRECTORY="XXX"                             # Set file path ; this should be the absolute file path to the main folder
 export scripts_dir="$MAINDIRECTORY/scripts"            # choose location of scripts
 export protein_file="$MAINDIRECTORY/inputs/prot_water" # this should be the prm7 and rst7 file name (without the extension) for the protein
-export ligands_folder="$MAINDIRECTORY/inputs/ligands"      # location of the input files for the ligands
+export ligands_folder="$MAINDIRECTORY/inputs/ligands"  # location of the input files for the ligands
 
 module load cuda/11.6
 module load amber/22
 module load gromacs/22.2
-# export BSS="/export/users/XXX/anaconda3/bin/activate biosimspace-dev"
+export BSS="/export/users/XXX/anaconda3/bin/activate biosimspace-dev"
 source $BSS
 
 # might have to source like this, depending on where it is
