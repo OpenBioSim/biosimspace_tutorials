@@ -124,17 +124,19 @@ system_1.removeMolecules(system_ligand_1)
 system_1.addMolecules(system_merged_ligs)
 system_bound = system_1
 
-########################### now set up the SOMD or GROMACS MD directories.
+########################### now set up the SOMD or SOMD2 or GROMACS MD directories.
 # first, figure out which engine and what runtime the user has specified in protocol.
 stream = open(f"{main_dir}/protocol.dat", "r")
 lines = stream.readlines()
 
 ### get the requested engine.
 engine_query = lines[7].rstrip().replace(" ", "").split("=")[-1].upper()
-if engine_query not in ["SOMD", "GROMACS"]:
+if engine_query not in ["SOMD", "GROMACS", "SOMD2"]:
     raise NameError(
-        "Input MD engine not recognised. Please use any of ['SOMD', 'GROMACS']"
-        + "on the eighth line of protocol.dat in the shape of (e.g.):\nengine = SOMD"
+        """Input MD engine not recognised.
+        Please use any of ['SOMD', 'GROMACS', 'SOMD2']
+        on the eighth line of protocol.dat in the shape of (e.g.):
+        engine = SOMD"""
     )
 
 ### get the requested runtime.
@@ -179,6 +181,13 @@ freenrg_protocol = BSS.Protocol.FreeEnergy(
     num_lam=num_lambda, runtime=runtime_query * runtime_unit
 )
 
+# create a custom config file for SOMD2.
+if engine_query == "SOMD2":
+    import yaml as _yaml
+    somd2_config = {"num_lambda": num_lambda,
+                    "runtime": f"{runtime_query * runtime_unit}"
+    }
+
 # for GROMACS, also need per lambda min + eq
 if engine_query == "GROMACS":
     min_protocol = BSS.Protocol.FreeEnergyMinimisation(num_lam=num_lambda)
@@ -214,6 +223,28 @@ if engine_query == "SOMD":
         engine=f"{engine_query}",
         work_dir=workdir + "/free",
     )
+
+# for SOMD2 we just need to save the perturbable system and the config file.
+elif engine_query == "SOMD2":
+    os.makedirs(
+        f"{main_dir}/outputs/{engine_query}/{lig_0}~{lig_1}/bound", exist_ok=True
+    )
+    BSS.Stream.save(
+        system_bound,
+        f"{main_dir}/outputs/{engine_query}/{lig_0}~{lig_1}/bound/{lig_0}~{lig_1}",
+    )
+    with open(f"{main_dir}/outputs/{engine_query}/{lig_0}~{lig_1}/bound/config.yaml", 'w') as yaml_file:
+        _yaml.dump(somd2_config, yaml_file)
+
+    os.makedirs(
+        f"{main_dir}/outputs/{engine_query}/{lig_0}~{lig_1}/free", exist_ok=True
+    )
+    BSS.Stream.save(
+        system_free,
+        f"{main_dir}/outputs/{engine_query}/{lig_0}~{lig_1}/free/{lig_0}~{lig_1}",
+    )
+    with open(f"{main_dir}/outputs/{engine_query}/{lig_0}~{lig_1}/free/config.yaml", 'w') as yaml_file:
+        _yaml.dump(somd2_config, yaml_file)
 
 elif engine_query == "GROMACS":
     print("Bound..")
