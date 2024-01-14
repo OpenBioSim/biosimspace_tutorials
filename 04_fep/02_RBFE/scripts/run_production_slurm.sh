@@ -35,45 +35,45 @@ lam=${lamvals[SLURM_ARRAY_TASK_ID]}
 # change to the trans dir, abort and message if not there
 cd "$MAINDIRECTORY"/outputs/"$engine"/"$transformation" || exit
 if [[ ! -d $MAINDIRECTORY/outputs/$engine/$transformation ]]; then
-	echo "$MAINDIRECTORY/outputs/$engine/$transformation does not exist. Production run aborted..."
-	exit 1
+    echo "$MAINDIRECTORY/outputs/$engine/$transformation does not exist. Production run aborted..."
+    exit 1
 fi
 trans_dir=$(pwd)
 
 for dir in 'bound' 'free'; do
 
-	if [ "$engine" = "SOMD" ]; then
+    if [ "$engine" = "SOMD" ]; then
         cd $dir
         cd lambda_$lam
         $somdfreenrg -c somd.rst7 -t somd.prm7 -m somd.pert -C somd.cfg -p CUDA
 
         cd $trans_dir
 
-	elif [ "$engine" = "SOMD2" ]; then
-	cd $dir
-    somd2 "$transformation".bss --config config.yaml
+    elif [ "$engine" = "SOMD2" ]; then
+        cd $dir
+        somd2 "$transformation".bss --config config.yaml
 
+        cd $trans_dir
 
+    elif [ "$engine" = "GROMACS" ]; then
 
-	elif [ "$engine" = "GROMACS" ]; then
+        cd $dir
 
-    cd $dir
+        echo "min"
+        gmx grompp -f min/lambda_$lam/gromacs.mdp -c min/lambda_$lam/initial_gromacs.gro -p min/lambda_$lam/gromacs.top -o min/lambda_$lam/gromacs.tpr
+        gmx mdrun -ntmpi 1 -deffnm min/lambda_$lam/gromacs
 
-    echo "min"
-    gmx grompp -f min/lambda_$lam/gromacs.mdp -c min/lambda_$lam/initial_gromacs.gro -p min/lambda_$lam/gromacs.top -o min/lambda_$lam/gromacs.tpr
-    gmx mdrun -ntmpi 1 -deffnm min/lambda_$lam/gromacs ;
+        echo "heat"
+        gmx grompp -f heat/lambda_$lam/gromacs.mdp -c min/lambda_$lam/gromacs.gro -p heat/lambda_$lam/gromacs.top -o heat/lambda_$lam/gromacs.tpr
+        gmx mdrun -ntmpi 1 -deffnm heat/lambda_$lam/gromacs
 
-    echo "heat"
-    gmx grompp -f heat/lambda_$lam/gromacs.mdp -c min/lambda_$lam/gromacs.gro -p heat/lambda_$lam/gromacs.top -o heat/lambda_$lam/gromacs.tpr
-    gmx mdrun -ntmpi 1 -deffnm heat/lambda_$lam/gromacs ;
+        echo "eq"
+        gmx grompp -f eq/lambda_$lam/gromacs.mdp -c heat/lambda_$lam/gromacs.gro -p eq/lambda_$lam/gromacs.top -t heat/lambda_$lam/gromacs.cpt -o eq/lambda_$lam/gromacs.tpr
+        gmx mdrun -ntmpi 1 -deffnm eq/lambda_$lam/gromacs
 
-    echo "eq"
-    gmx grompp -f eq/lambda_$lam/gromacs.mdp -c heat/lambda_$lam/gromacs.gro -p eq/lambda_$lam/gromacs.top -t heat/lambda_$lam/gromacs.cpt  -o eq/lambda_$lam/gromacs.tpr
-    gmx mdrun -ntmpi 1 -deffnm eq/lambda_$lam/gromacs ;
-
-    echo "prod"
-    gmx grompp -f lambda_$lam/gromacs.mdp -c eq/lambda_$lam/gromacs.gro -p lambda_$lam/gromacs.top -t eq/lambda_$lam/gromacs.cpt -o lambda_$lam/gromacs.tpr
-    gmx mdrun -ntmpi 1 -deffnm lambda_$lam/gromacs ;
+        echo "prod"
+        gmx grompp -f lambda_$lam/gromacs.mdp -c eq/lambda_$lam/gromacs.gro -p lambda_$lam/gromacs.top -t eq/lambda_$lam/gromacs.cpt -o lambda_$lam/gromacs.tpr
+        gmx mdrun -ntmpi 1 -deffnm lambda_$lam/gromacs
 
     fi
 
