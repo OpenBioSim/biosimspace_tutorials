@@ -215,10 +215,12 @@ node.addInput(
     ),
 )
 
-# add SOMD2 as an FEP engine option
+# add SOMD2 and AMBER as FEP engine options
 fep_engines = [e.upper() for e in BSS.FreeEnergy.engines()]
 if "SOMD2" not in fep_engines:
     fep_engines.append("SOMD2")
+if "AMBER" not in fep_engines:
+    fep_engines.append("AMBER")
 
 node.addInput(
     "FEP Engine",

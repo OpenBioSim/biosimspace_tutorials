@@ -75,6 +75,22 @@ for dir in 'bound' 'free'; do
         gmx grompp -f lambda_$lam/gromacs.mdp -c eq/lambda_$lam/gromacs.gro -p lambda_$lam/gromacs.top -t eq/lambda_$lam/gromacs.cpt -o lambda_$lam/gromacs.tpr
         gmx mdrun -ntmpi 1 -deffnm lambda_$lam/gromacs
 
+    elif [ "$engine" = "AMBER" ]; then
+
+        cd $dir
+
+        echo "min"
+        pmemd.cuda -O -i min/lambda_$lam/amber.cfg -p min/lambda_$lam/amber.prm7 -c min/lambda_$lam/amber.rst7 -o min/lambda_$lam/amber.out -r min/lambda_$lam/amber.crd -inf min/lambda_$lam/amber.nrg -x min/lambda_$lam/amber.nc
+
+        echo "heat"
+        pmemd.cuda -O -i heat/lambda_$lam/amber.cfg -p heat/lambda_$lam/amber.prm7 -c min/lambda_$lam/amber.crd -o heat/lambda_$lam/amber.out -r heat/lambda_$lam/amber.crd -inf heat/lambda_$lam/amber.nrg -x heat/lambda_$lam/amber.nc
+
+        echo "eq"
+        pmemd.cuda -O -i eq/lambda_$lam/amber.cfg -p eq/lambda_$lam/amber.prm7 -c heat/lambda_$lam/amber.crd -o eq/lambda_$lam/amber.out -r eq/lambda_$lam/amber.crd -inf eq/lambda_$lam/amber.nrg -x eq/lambda_$lam/amber.nc
+
+        echo "prod"
+        pmemd.cuda -O -i lambda_$lam/amber.cfg -p lambda_$lam/amber.prm7 -c eq/lambda_$lam/amber.crd -o lambda_$lam/amber.out -r lambda_$lam/amber.crd -inf lambda_$lam/amber.nrg -x lambda_$lam/amber.nc
+
     fi
 
     cd $trans_dir

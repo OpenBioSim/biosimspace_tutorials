@@ -131,10 +131,10 @@ lines = stream.readlines()
 
 ### get the requested engine.
 engine_query = lines[7].rstrip().replace(" ", "").split("=")[-1].upper()
-if engine_query not in ["SOMD", "GROMACS", "SOMD2"]:
+if engine_query not in ["AMBER", "GROMACS", "SOMD", "SOMD2"]:
     raise NameError(
         """Input MD engine not recognised.
-        Please use any of ['SOMD', 'GROMACS', 'SOMD2']
+        Please use any of ['AMBER', 'SOMD', 'GROMACS', 'SOMD2']
         on the eighth line of protocol.dat in the shape of (e.g.):
         engine = SOMD"""
     )
@@ -188,8 +188,8 @@ if engine_query == "SOMD2":
                     "runtime": f"{runtime_query * runtime_unit}"
     }
 
-# for GROMACS, also need per lambda min + eq
-if engine_query == "GROMACS":
+# for AMBER and GROMACS, also need per lambda min + eq
+elif engine_query in ["AMBER", "GROMACS"]:
     min_protocol = BSS.Protocol.FreeEnergyMinimisation(num_lam=num_lambda)
     nvt_protocol = BSS.Protocol.FreeEnergyEquilibration(
         num_lam=num_lambda, pressure=None
@@ -246,7 +246,7 @@ elif engine_query == "SOMD2":
     with open(f"{main_dir}/outputs/{engine_query}/{lig_0}~{lig_1}/free/config.yaml", 'w') as yaml_file:
         _yaml.dump(somd2_config, yaml_file)
 
-elif engine_query == "GROMACS":
+elif engine_query in ["AMBER", "GROMACS"]:
     print("Bound..")
 
     workdir = f"{main_dir}/outputs/{engine_query}/{lig_0}~{lig_1}"
