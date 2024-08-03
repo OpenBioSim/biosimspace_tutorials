@@ -87,7 +87,7 @@ The price paid for greater generality is that these calculations are generally h
 
 In some ways ABFE calculations are simpler than RBFE calculations, in that we do not need to align and merge two ligands. However, ABFE calculations require receptor-ligand restraints (shown by the red dotted lines above) to prevent sampling issues. To obtain converged free energies of binding without restraints, we would have to be sure that the ligand was sampling outside the binding site as soon as the unbound state became comparable in free energy to the bound state, and that we were correctly estimating the ratios of the sizes of the simulation box to the binding site; in practice, this is not generally feasible.
 
-There are several varieties of receptor-ligand restraints, including [distance-to-bound configuration (DBC) restraints](https://pubs.acs.org/doi/full/10.1021/acs.jctc.8b00447), [restraints on coarse variables derived by finding the optimal rotation which minimises the complex's RMSD with respect to a reference structure](https://pubs.acs.org/doi/full/10.1021/acs.jctc.7b00791), and [multiple distance restraints](https://pubs.acs.org/doi/10.1021/acs.jctc.3c00139).  
+There are several varieties of receptor-ligand restraints, including [distance-to-bound configuration (DBC) restraints](https://pubs.acs.org/doi/full/10.1021/acs.jctc.8b00447), [restraints on coarse variables derived by finding the optimal rotation which minimises the complex's RMSD with respect to a reference structure](https://pubs.acs.org/doi/full/10.1021/acs.jctc.7b00791), and [multiple distance restraints](https://pubs.acs.org/doi/10.1021/acs.jctc.3c00139).
 
 Here, we will use the set of receptor-ligand restraints originally proposed by [Boresch et al.](https://pubs.acs.org/doi/full/10.1021/jp0217839), because they are simple to implement, very widely used, and the only restraints currently supported by BioSimSpace. These restrain all 6 relative external degrees of freedom (three translational and three rotational) of the ligand with respect to the receptor. This is done by imposing harmonic restraints on one distance, two angles, and three dihedral angles defined by three anchor points in the protein (P1-3) and three in the ligand (L1-3):
 
@@ -450,10 +450,13 @@ free_discharge_protocol = BSS.Protocol.FreeEnergy(runtime=6*BSS.Units.Time.nanos
                                                   lam_vals=lam_vals_discharge_free, 
                                                   perturbation_type="discharge_soft")
 
-free_discharge_fe_calc = BSS.FreeEnergy.AlchemicalFreeEnergy(restraint.system,
+# Assuming that you've already prepared "free_system", which is just the ligand in a box of water, 
+# and marked the ligand to be decoupled, as shown earlier in this notebook. To set up a ligand
+# in a water box, see the introductory tutorials.
+free_discharge_fe_calc = BSS.FreeEnergy.AlchemicalFreeEnergy(free_system,
                                                              free_discharge_protocol,
                                                              engine='somd',
-                                                             restraint=restraint,
+                                                             restraint=None, # Restraints not needed.
                                                              work_dir='output/free_discharge')
 
 lam_vals_vanish_free = [0.000, 0.028, 0.056, 0.111, 0.167, 0.222, 0.278, 0.333, 0.389, 0.444, 
@@ -463,10 +466,12 @@ free_vanish_protocol = BSS.Protocol.FreeEnergy(runtime=6*BSS.Units.Time.nanoseco
                                                lam_vals=lam_vals_vanish_free,
                                                perturbation_type="vanish_soft")
 
-free_vanish_fe_calc = BSS.FreeEnergy.AlchemicalFreeEnergy(restraint.system,
+# As noted above, we assumed that you've already prepared "free_system" (the ligand in a box
+# of water) and marked the ligand to be decoupled.
+free_vanish_fe_calc = BSS.FreeEnergy.AlchemicalFreeEnergy(free_system,
                                                           free_vanish_protocol,
                                                           engine='somd', 
-                                                          restraint=restraint,
+                                                          restraint=None, # Restraints not needed.
                                                           work_dir='output/free_vanish')
 ```
 
