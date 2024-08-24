@@ -14,7 +14,7 @@
 Computational chemists can support the study of structure-activity relationships in medicinal chemistry by making computer models that can predict the binding affinity of ligands to proteins. Alchemical free energy (AFE) methods are a popular class of methodologies to do so. Some
 introductory reading is recommended ~\cite{mey2020best, cournia_allen_sherman_2017, kuhn_firth-clark_tosco_mey_mackey_michel_2020, Hahn2022}.
 
-This tutorial covers the basic principles of alchemical free energy calculations with BioSimSpace; how to setup, simulate, and analyze alchemical Relative Binding Free Energy (RBFE) calculations for congeneric series of protein-ligand complexes; how to set up and analyze alchemical ABFE calculations of a ligand bound to a protein.  
+This tutorial covers the basic principles of alchemical free energy calculations with BioSimSpace; how to setup, simulate, and analyze alchemical Relative Binding Free Energy (RBFE) calculations for congeneric series of protein-ligand complexes; how to set up and analyze alchemical ABFE calculations of a ligand bound to a protein; how to set up alchemical RBFE calculations involving protein mutations.  
 The notebooks prompt the readers to complete a series of exercises that typically involve completing cells to test their understanding of the material presented. 
 
 \subsubsection{Setting up AFE calculations using BioSimSpace}
@@ -85,3 +85,17 @@ Since ABFE calculations can be time-consuming we recommend parallel execution of
 \\
 
 The fifth notebook \href{https://github.com/OpenBioSim/biosimspace_tutorials/blob/main/04_fep/03_ABFE/02_analysis_abfe.ipynb}{02-analysis-abfe} describes how to analyse an ABFE calculation to estimate the free energy of binding of a ligand. Sample output simulation data are provided for each leg of the double decoupling thermodynamic cycle and analysed using \textit{BSS.FreeEnergy.AlchemicalFreeEnergy.Analyse} to plot potentials of mean forces. The standard free energy of binding is then obtained by summing the free energy changes from each leg and adding a standard state correction term for the use of Boresch restraints, along with any symmetry corrections required. The notebook also describes how to carry out convergence analyses (see Figure \ref{abfe_fig}B) to assess the robustness of the ABFE estimates.  
+
+\subsubsection{Protein FEP calculations}
+
+The sixth notebook \href{https://github.com/OpenBioSim/biosimspace_tutorials/blob/main/04_fep/04_PFEP/01_setup_pfep.ipynb}{01-setup-pfep} describes how to set up alchemical RBFE calculations with BSS that involve alchemical protein modifications. This free energy functionality was introduced in the 2024.2 release of BSS, which added changes to the maximum common substructure, alignment and merge functionalities in order to support the setting up of alchemical protein calculations.
+
+While traditionally AFE methodologies have been developed with the focus on ligand modifications, AFE protocols that focus on protein modifications, specifically side-chain mutations, are less established. These protein free energy perturbation (PFEP) protocols allow for example, the calculation of the change in the binding free energy as a result of a protein mutation, which can then be used to optimize the efficacy of the ligand against drug resistance, or to tune the selectivity selectivity profile against off-targets \cite{doi:10.1021/acscentsci.8b00717}. In addition, PFEP protocols also allow for estimating the effect of amino acid mutations on protein-protein binding affinities \cite{doi:10.1021/acs.jctc.3c00333}. These types of calculations involve alchemically transforming the protein side-chains in both holo and apo stages in the thermodynamic cycle, as shown in Figure \ref{fig:pfep_tcycle}.
+
+\begin{figure}[htp]
+\includegraphics[width=\linewidth]{LIVECOMS/04_fep/pfep-tutorial_tcycle.png}
+\caption{Thermodynamic cycle for calculating change in the binding affinity of a ligand due to a protein mutation. The change in the binding affinity as a result of a mutation ($\Delta\Delta G_{mut}$) can be calculated by taking the difference between $\Delta G_{holo}$ and $\Delta G_{apo}$.}
+\label{fig:pfep_tcycle}
+\end{figure}
+
+The notebook describes how to prepare protein input files in order to make use of the new region-of-interest (ROI) mapping functionality of \textit{BSS.Align.matchAtoms}. This is illustrated by using ubiquitin as the example protein system. Next, the notebook shows how to use the ROI features of \textit{BSS.Align.rmsdAlign} and \textit{BSS.Align.merge} functions in order to set up an alchemical side-chain modification. Another, more realistic example with an aldose reductase system taken from a study by \citeauthor{doi:10.1021/acscentsci.8b00717} et al. is also demonstrated, where both apo and the holo parts of the thermodynamic cycle are prepared.
