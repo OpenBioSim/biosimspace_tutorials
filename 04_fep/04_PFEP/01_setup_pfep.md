@@ -4,7 +4,7 @@ In this tutorial you will learn how to use BioSimSpace's mapping functionality t
 
 The relative change in the binding affinity as a result of a mutation, $\Delta \Delta G_{mut}$ can be calculated from the difference between free energy of mutation in the holo (bound) and apo (unbound) simulation legs, i.e.:
 
-![PFEP Tutorial Thermodynamic Cycle-1-2.png](<images/PFEP Tutorial Thermodynamic Cycle-1-2.png>)
+![pfep_tutorial_tcycle](images/pfep_tutorial_tcycle.png)
 
 $$
 \Delta \Delta G_{mut} = \Delta G_{holo} - \Delta G_{apo}
@@ -34,12 +34,6 @@ For this simple case we are going to use *pdb4amber* to mutate a threonine at po
 
 ```python
 !pdb4amber --reduce --dry --add-missing-atoms -o 1UBQ_dry_wt.pdb 1UBQ.pdb
-```
-
-
-```python
-!pdb4amber -o protein_wt_amber.pdb protein_wt.pdb
-!pdb4amber -o protein_mut_amber.pdb protein_mut.pdb
 ```
 
 Next, we are going to create a mutant structure:
