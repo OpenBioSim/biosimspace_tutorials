@@ -28,3 +28,10 @@ Authors:
 - [Finlay Clark -- @fjclark](https://github.com/fjclark)
 
 Functionality for running alchemical absolute binding free energy calculations is currently present in the Exscientia Sandpit within BioSimSpace. These notebooks discuss the idea of Sandpits for including experimental features in BioSimSpace, and detail setting up and analysing absolute binding free energy calculations.
+
+## 03. Protein Free Energy Calculations
+
+Authors:
+- [Audrius Kalpokas -- @akalpokas](https://github.com/akalpokas)
+
+An introduction to alchemical protein free energy calculations. Specifically, this includes an overview of BioSimSpace region-of-interest (ROI) functionality and examples of how to setup, view and export alchemical protein systems.

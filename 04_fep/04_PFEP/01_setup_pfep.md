@@ -240,12 +240,12 @@ ligand_47d = BSS.IO.readMolecules(BSS.IO.expand(BSS.tutorialUrl(), ["ligand_47_g
 cofactor_nap = BSS.IO.readMolecules(BSS.IO.expand(BSS.tutorialUrl(), ["cofactor_nap_gaff2.gro", "cofactor_nap_gaff2.top"]))[0]
 ```
 
-We can use BioSimSpace's Amber parametrisation pipeline if we wish to, but in this case the ligands have been parametrised for us so we can skip the following cell:
+We can use BioSimSpace's Amber parametrisation pipeline if we wish to, but in this case the ligands have been parametrised for us so we can skip the following cell. If you uncomment and run this cell it may take several minutes to complete.
 
 
 ```python
-ligand_47d = BSS.Parameters.gaff2(ligand_47d, charge_method="BCC", net_charge=-1).getMolecule()
-cofactor_nap = BSS.Parameters.gaff2(cofactor_nap, charge_method="BCC", net_charge=-4).getMolecule()
+# ligand_47d = BSS.Parameters.gaff2(ligand_47d, charge_method="BCC", net_charge=-1).getMolecule()
+# cofactor_nap = BSS.Parameters.gaff2(cofactor_nap, charge_method="BCC", net_charge=-4).getMolecule()
 ```
 
 We can simply add the ligands to our alchemical protein in order to create an alchemical holo system. This way we are assuming that the ligands are already placed correctly with respect to the protein:
