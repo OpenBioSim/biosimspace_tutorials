@@ -99,3 +99,19 @@ While traditionally AFE methodologies have been developed with the focus on liga
 \end{figure}
 
 The notebook describes how to prepare protein input files in order to make use of the new region-of-interest (ROI) mapping functionality of \textit{BSS.Align.matchAtoms}. This is illustrated by using ubiquitin as the example protein system. Next, the notebook shows how to use the ROI features of \textit{BSS.Align.rmsdAlign} and \textit{BSS.Align.merge} functions in order to set up an alchemical side-chain modification. Another, more realistic example with an aldose reductase system taken from a study by \citeauthor{doi:10.1021/acscentsci.8b00717} et al. is also demonstrated, where both apo and the holo parts of the thermodynamic cycle are prepared.
+
+\subsection{Alchemical Transfer}
+
+The seventh notebook \href{https://github.com/OpenBioSim/biosimspace_tutorials/blob/main/04_fep/05_ATM/01-ATM.ipynb}{01-ATM} describes how to setup and run an RBFE calculation using the Alchemical Transfer Method (ATM) \cite{WU2021}. The specific example in this case is TYK2 31-43, taken from the benchmark set of Wang et al. \cite{Wang2015} 
+
+Traditional methods of RBFE calculation, as desribed in previous examples, require the creation of a 'merged' molecule whose parameters are scaled over the course of the calculation, this is not the case for ATM calculations. Instead the end states in an ATM RBFE calculation represent ligand A bound to the receptor and ligand B free within the solvent and vice versa. This difference sets ATM apart from regular RBFE methods; ATM calculations effectively simulate the forward, reverse, free and bound legs simultaneously within the same system, with lambda representing the interaction strengths of both ligands in both the bound and free states. As a result of this difference, ATM excels at calculations in which there are large differences between the two ligands (which would require intermediate states in order to be properly captured by more traditional RBFE methods) and also in sytems that experience a change in charge between the two ligands.
+
+The tutorial notebook begins with the preparation of an ATM-compatible system, including placing the bound and free ligands with a specific displacement, and choosing the ligand atoms to use in the alignment restraints, as seen in figure \ref{fig:ATM_rigid_cores}, which are vital to the stability of ATM-RBFE calculations.
+
+\begin{figure}[htp]
+\includegraphics[width=\linewidth]{LIVECOMS/04_fep/alignment_visualisation.png}
+\caption{Visualisation of the atoms within both the bound (red) and free (green) ligands that are to be used for the rigid core restraints. These atoms will be used to maintain the relative orientation of the two ligands during equilibration and production.}
+\label{fig:ATM_rigid_cores}
+\end{figure}
+
+The notebook then describes a standard minimisation and equilibration protocol for ATM calculations, including the gradual introduction of the ATM force via an \textit{anneal to lambda} stage. Finally, it describes the process of running production simulations and analysing the results, all within BioSimSpace.
