@@ -2,7 +2,7 @@ import requests, os
 import BioSimSpace as BSS
 
 links = {
-    "05": (
+    "01": (
         "tyk2_atm.tar.bz2",
         os.path.join(BSS.tutorialUrl(), "tyk2_atm.tar.bz2"),
     ),
