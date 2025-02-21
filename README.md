@@ -7,7 +7,7 @@ These tutorials have been tested with BioSimSpace 2023.5.0 on a linux-64 platfor
 * Gromacs (tested with 2023.1)
 * AmberTools (tested with 23.3) 
 * PLUMED (tested with 2.9.0)
-* cinnabar (tested with 0.3.0)
+* cinnabar (tested with 0.4.1)
 * alchemlyb (tested with 1.0.1)
 
 # Installation instructions
