@@ -5,6 +5,7 @@
 
 
 import BioSimSpace as BSS
+from BioSimSpace import _Exceptions
 import sys
 from pathlib import Path
 
@@ -12,7 +13,7 @@ from pathlib import Path
 
 
 # Helper function
-def runProcess(system, protocol, engine="AMBER", pmemd=True):
+def runProcess(system, protocol, engine="GROMACS", AMBER_path=None, pmemd=True):
     """
     Given a solvated system (BSS object) and BSS protocol, run a process workflow with either
     Sander (CPU) or pmemd.cuda (GPU). NPT is typically done with GPU to save computing time.
@@ -24,17 +25,20 @@ def runProcess(system, protocol, engine="AMBER", pmemd=True):
         if not pmemd:
             process = BSS.Process.Amber(system, protocol)
         elif pmemd:
+            if AMBER_path is None:
+                raise ValueError(
+                    "AMBER path must be specified to run using AMBER engine."
+                )
             process = BSS.Process.Amber(
                 system,
                 protocol,
-                exe="/home/matthew/AMBER/amber24/bin/pmemd.cuda",
+                exe=AMBER_path,
                 is_gpu=True,
             )
     elif engine == "GROMACS":
         process = BSS.Process.Gromacs(system, protocol)
     elif engine == "OpenMM":
         process = BSS.Process.OpenMM(system, protocol)
-
     # Start the process.
     process.start()
 
@@ -80,13 +84,6 @@ node.addInput(
 )
 
 node.addInput(
-    "minsteps",
-    BSS.Gateway.Integer(
-        help="The max number of energy minimisation steps.", default=250
-    ),
-)
-
-node.addInput(
     "nvt_restrained",
     BSS.Gateway.Time(
         help="The duration of the NVT restrained equilibration stage.",
@@ -118,8 +115,13 @@ node.addInput(
         default="AMBER",
     ),
 )
-
-
+node.addInput(
+    "AMBER_path",
+    BSS.Gateway.String(
+        help="Path to AMBER installation",
+        default=None,
+    ),
+)
 node.addInput(
     "output suffix",
     BSS.Gateway.String("Suffix of the output file", default="_equilibrated"),
@@ -181,7 +183,9 @@ protocol = BSS.Protocol.Equilibration(
     temperature_end=300 * BSS.Units.Temperature.kelvin,
     restraint="all",
 )
-equil1 = runProcess(system, protocol, engine=engine)
+equil1 = runProcess(
+    system, protocol, engine=engine, AMBER_path=node.getInput("AMBER_path")
+)
 
 
 # In[ ]:
@@ -205,7 +209,9 @@ protocol = BSS.Protocol.Equilibration(
     temperature=300 * BSS.Units.Temperature.kelvin,
     restraint="heavy",
 )
-equil3 = runProcess(equil2, protocol, engine=engine)
+equil3 = runProcess(
+    equil2, protocol, engine=engine, AMBER_path=node.getInput("AMBER_path")
+)
 
 
 # In[ ]:
@@ -217,7 +223,9 @@ protocol = BSS.Protocol.Equilibration(
     pressure=1 * BSS.Units.Pressure.atm,
     temperature=300 * BSS.Units.Temperature.kelvin,
 )
-system_eq = runProcess(equil3, protocol, engine=engine)
+system_eq = runProcess(
+    equil3, protocol, engine=engine, AMBER_path=node.getInput("AMBER_path")
+)
 
 
 # In[ ]:

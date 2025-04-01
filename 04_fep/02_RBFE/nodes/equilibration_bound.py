@@ -5,6 +5,7 @@
 
 
 import BioSimSpace as BSS
+from BioSimSpace import _Exceptions
 import sys
 
 from pathlib import Path
@@ -14,7 +15,7 @@ from pathlib import Path
 
 
 # Helper function
-def runProcess(system, protocol, engine="AMBER", pmemd=True):
+def runProcess(system, protocol, engine="GROMACS", AMBER_path=None, pmemd=True):
     """
     Given a solvated system (BSS object) and BSS protocol, run a process workflow with either
     Sander (CPU) or pmemd.cuda (GPU). NPT is typically done with GPU to save computing time.
@@ -26,10 +27,14 @@ def runProcess(system, protocol, engine="AMBER", pmemd=True):
         if not pmemd:
             process = BSS.Process.Amber(system, protocol)
         elif pmemd:
+            if AMBER_path is None:
+                raise ValueError(
+                    "AMBER path must be specified to run using AMBER engine."
+                )
             process = BSS.Process.Amber(
                 system,
                 protocol,
-                exe="/home/matthew/AMBER/amber24/bin/pmemd.cuda",
+                exe=AMBER_path,
                 is_gpu=True,
             )
     elif engine == "GROMACS":
@@ -54,9 +59,6 @@ def runProcess(system, protocol, engine="AMBER", pmemd=True):
     return system
 
 
-# In[ ]:
-
-
 # Initialise the node object
 node = BSS.Gateway.Node("Equilibrate a solvated ligand.")
 # Set the node author and license.
@@ -64,6 +66,11 @@ node.addAuthor(
     name="Julien Michel",
     email="julien.michel@ed.ac.uk",
     affiliation="University of Edinburgh",
+)
+node.addAuthor(
+    name="Matthew Burman",
+    email="matthew@openbiosim.org",
+    affiliation="OpenBioSim",
 )
 node.setLicense("GPLv3")
 
@@ -74,14 +81,6 @@ node.addInput(
         help="A topology/coordinate representation of a solvated complex."
     ),
 )
-
-node.addInput(
-    "minsteps",
-    BSS.Gateway.Integer(
-        help="The max number of energy minimisation steps.", default=250
-    ),
-)
-
 node.addInput(
     "nvt_restrained",
     BSS.Gateway.Time(
@@ -134,6 +133,14 @@ node.addInput(
         help="Prefix for output files. Required for any nodes run in multiple instances."
     ),
 )
+
+node.addInput(
+    "AMBER_path",
+    BSS.Gateway.String(
+        help="Path to AMBER installation",
+        default=None,
+    ),
+)
 ### Set the node outputs
 node.addOutput("system_eq", BSS.Gateway.FileSet(help="The equilibrated system."))
 
@@ -175,7 +182,9 @@ protocol = BSS.Protocol.Equilibration(
     temperature_end=300 * BSS.Units.Temperature.kelvin,
     restraint="all",
 )
-equil1 = runProcess(system, protocol, engine=engine)
+equil1 = runProcess(
+    system, protocol, engine=engine, AMBER_path=node.getInput("AMBER_path")
+)
 
 
 # In[ ]:
@@ -187,7 +196,9 @@ protocol = BSS.Protocol.Equilibration(
     temperature=300 * BSS.Units.Temperature.kelvin,
     restraint="backbone",
 )
-equil2 = runProcess(equil1, protocol, engine=engine)
+equil2 = runProcess(
+    equil1, protocol, engine=engine, AMBER_path=node.getInput("AMBER_path")
+)
 
 
 # In[ ]:
@@ -198,7 +209,9 @@ protocol = BSS.Protocol.Equilibration(
     runtime=node.getInput("nvt"), temperature=300 * BSS.Units.Temperature.kelvin
 )
 
-equil3 = runProcess(equil2, protocol, engine=engine)
+equil3 = runProcess(
+    equil2, protocol, engine=engine, AMBER_path=node.getInput("AMBER_path")
+)
 
 
 # In[ ]:
@@ -211,7 +224,9 @@ protocol = BSS.Protocol.Equilibration(
     temperature=300 * BSS.Units.Temperature.kelvin,
     restraint="heavy",
 )
-equil4 = runProcess(equil3, protocol, engine=engine)
+equil4 = runProcess(
+    equil3, protocol, engine=engine, AMBER_path=node.getInput("AMBER_path")
+)
 
 
 # In[ ]:
@@ -223,7 +238,9 @@ protocol = BSS.Protocol.Equilibration(
     pressure=1 * BSS.Units.Pressure.atm,
     temperature=300 * BSS.Units.Temperature.kelvin,
 )
-system_eq = runProcess(equil4, protocol, engine=engine)
+system_eq = runProcess(
+    equil4, protocol, engine=engine, AMBER_path=node.getInput("AMBER_path")
+)
 
 
 # In[ ]:

@@ -2,18 +2,19 @@ import BioSimSpace as BSS
 from pathlib import Path
 
 
-def Minimisation(system, steps=10000, engine="AMBER"):
+def Minimisation(system, steps=10000, engine="GROMACS", AMBER_path=None):
     protocol = BSS.Protocol.Minimisation(steps=steps)
     if engine == "GROMACS":
         process = BSS.Process.Gromacs(
             system, protocol, ignore_warnings=True, extra_args={"--ntmpi": 1}
         )
     elif engine == "AMBER":
+        if AMBER_path is None:
+            raise ValueError("AMBER path must be specified to run using AMBER engine.")
         process = BSS.Process.Amber(
             system,
             protocol,
-            is_gpu=True,
-            exe="/home/matthew/AMBER/amber24/bin/pmemd.cuda",
+            exe=AMBER_path,
         )
     else:
         raise TypeError("No valid MD engine")
@@ -76,7 +77,15 @@ node.addInput(
     BSS.Gateway.String(
         help="The MD engine to use for minimisation.",
         allowed=["AMBER", "GROMACS"],
-        default="AMBER",
+        default="GROMACS",
+    ),
+)
+
+node.addInput(
+    "AMBER_path",
+    BSS.Gateway.String(
+        help="Path to AMBER installation",
+        default=None,
     ),
 )
 
@@ -110,7 +119,10 @@ system = BSS.IO.readMolecules(node.getInput("file"))
 
 try:
     s_min = Minimisation(
-        system, steps=node.getInput("steps"), engine=node.getInput("MDengine")
+        system,
+        steps=node.getInput("steps"),
+        engine=node.getInput("MDengine"),
+        AMBER_path=node.getInput("AMBER_path"),
     )
 except Exception as e:
     print("Error in minimisation")
