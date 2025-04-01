@@ -4,12 +4,17 @@ from pathlib import Path
 
 def Minimisation(system, steps=10000, engine="AMBER"):
     protocol = BSS.Protocol.Minimisation(steps=steps)
-    if engine=="GROMACS":
+    if engine == "GROMACS":
         process = BSS.Process.Gromacs(
             system, protocol, ignore_warnings=True, extra_args={"--ntmpi": 1}
         )
-    elif engine=="AMBER":
-        process = BSS.Process.Amber(system, protocol, is_gpu=True, exe = "/home/matthew/AMBER/amber24/bin/pmemd.cuda",)
+    elif engine == "AMBER":
+        process = BSS.Process.Amber(
+            system,
+            protocol,
+            is_gpu=True,
+            exe="/home/matthew/AMBER/amber24/bin/pmemd.cuda",
+        )
     else:
         raise TypeError("No valid MD engine")
     process.start()
@@ -80,7 +85,6 @@ node.addOutput("minimised", BSS.Gateway.FileSet(help="The minimised molecular sy
 node.showControls()
 
 
-
 name = Path(node.getInput("file")[0]).stem.split(".")[0]
 outpath = Path("./" + node.getInput("output directory"))
 # make full name of output
@@ -105,7 +109,9 @@ outpath.mkdir(parents=True, exist_ok=True)
 system = BSS.IO.readMolecules(node.getInput("file"))
 
 try:
-    s_min = Minimisation(system, steps=node.getInput("steps"), engine=node.getInput("MDengine"))
+    s_min = Minimisation(
+        system, steps=node.getInput("steps"), engine=node.getInput("MDengine")
+    )
 except Exception as e:
     print("Error in minimisation")
     print(e)

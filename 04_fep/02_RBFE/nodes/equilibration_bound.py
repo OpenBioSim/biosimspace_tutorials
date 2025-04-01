@@ -26,7 +26,12 @@ def runProcess(system, protocol, engine="AMBER", pmemd=True):
         if not pmemd:
             process = BSS.Process.Amber(system, protocol)
         elif pmemd:
-            process = BSS.Process.Amber(system, protocol, exe="/home/matthew/AMBER/amber24/bin/pmemd.cuda", is_gpu=True)
+            process = BSS.Process.Amber(
+                system,
+                protocol,
+                exe="/home/matthew/AMBER/amber24/bin/pmemd.cuda",
+                is_gpu=True,
+            )
     elif engine == "GROMACS":
         process = BSS.Process.Gromacs(system, protocol)
     elif engine == "OpenMM":
@@ -159,7 +164,7 @@ if (
     )
     node.validate(file_prefix=node.getInput("file_prefix"))
     exit()
-    
+
 outpath.mkdir(parents=True, exist_ok=True)
 
 
@@ -237,7 +242,3 @@ node.validate(file_prefix=node.getInput("file_prefix"))
 
 
 # In[ ]:
-
-
-
-
