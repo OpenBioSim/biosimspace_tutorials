@@ -146,10 +146,6 @@ node.addOutput("system_eq", BSS.Gateway.FileSet(help="The equilibrated system.")
 
 node.showControls()
 
-#######################################
-### Load the system  ##
-#######################################
-system = BSS.IO.readMolecules(node.getInput("file"))
 
 engine = node.getInput("MDengine")
 print("The simulation engine is %s" % engine)
@@ -174,6 +170,10 @@ if (
 
 outpath.mkdir(parents=True, exist_ok=True)
 
+#######################################
+### Load the system  ##
+#######################################
+system = BSS.IO.readMolecules(node.getInput("file"))
 
 print(f"NVT equilibration while restraining all non-solvent atoms..")
 protocol = BSS.Protocol.Equilibration(

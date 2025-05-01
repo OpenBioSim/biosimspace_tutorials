@@ -100,8 +100,6 @@ node.addOutput(
 
 node.showControls()
 
-system = BSS.IO.readMolecules(node.getInput("file"))
-
 name = Path(node.getInput("file")).stem.split(".")[0]
 outpath = Path("./" + node.getInput("output directory"))
 # make full name of output
@@ -132,6 +130,8 @@ if (
     node.validate(file_prefix=node.getInput("file_prefix"))
     exit()
 
+
+system = BSS.IO.readMolecules(node.getInput("file"))
 
 outpath.mkdir(parents=True, exist_ok=True)
 
