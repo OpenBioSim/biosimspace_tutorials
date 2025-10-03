@@ -90,6 +90,7 @@ if not os.path.exists(f"{main_folder}/output_setup"):
 
 ```python
 from get_tutorial import download
+
 download("01")
 ```
 
@@ -625,3 +626,7 @@ As these would take too long to run and analyse in the span of a workshop, sampl
 
 This will cover how to analyse the results for an RBFE Network. You can get started with the setup notebook by following this link:
 [02_analysis_rbfe.ipynb](02_analysis_rbfe.ipynb)
+
+Alternatively, the contents of this workflow, including setup, production and analysis, can be run using our snakemake RBFE workflow. This workflow, along with a guide for deploying it at scale using SLURM, can be found here: https://github.com/OpenBioSim/rbfe_workflow
+
+
