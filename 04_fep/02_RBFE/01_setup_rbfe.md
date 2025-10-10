@@ -610,15 +610,22 @@ Once all the files are written, the folder can be copied to a computing cluster 
 
 Th run_all_slurm.sh calls the following scripts in order:
 
- - Ligand preparation (ligprep.py, run_ligprep_slurm.sh) - The ligand and protein are paramaterised, combined, and solvated. Equilibration is carried out.
+ - Ligand preparation (ligprep.py, run_ligprep_slurm.sh) - The ligand and protein are parameterised, combined, and solvated. Equilibration is carried out.
 
  - FEP preparation (fepprep.py, run_fepprep_slurm.sh) - For the perturbation, the ligands are mapped according to their maximum common substructure, and a perturbable system is created. The folders for the FEP run for SOMD or GROMACS are written.
 
- - Running the production windows (run_production_slurm.sh) - As each lambda window can be run independantly of other lambda windows, this is where most of the parallelisation takes place. Each window is submitted as part of a slurm array job.
+ - Running the production windows (run_production_slurm.sh) - As each lambda window can be run independently of other lambda windows, this is where most of the parallelisation takes place. Each window is submitted as part of a slurm array job.
 
  - Analysis (analysis.py, run_analysis_slurm.sh) - A simple analysis, outputting the data in a format suitable for the analysis tutorial.
 
 Older scripts, including one for an LSF cluster, are in the `04_fep/fep_archiv` folder.
+
+Alternatively, the contents of this workflow, including setup, production and analysis, can be run using our snakemake RBFE workflow. This workflow, along with a guide for deploying it at scale using SLURM, can be found here: https://github.com/OpenBioSim/rbfe_workflow.
+
+<div>
+<img src="images/snakemake_rulegraph.png" width="300"/>
+</div>
+
 
 As these would take too long to run and analyse in the span of a workshop, sample outputs are available in the analysis folder for the next part of the tutorial. Example outputs for the exercises in this tutorial are available in the `example_output/example_output_setup` folder.
 
@@ -626,7 +633,5 @@ As these would take too long to run and analyse in the span of a workshop, sampl
 
 This will cover how to analyse the results for an RBFE Network. You can get started with the setup notebook by following this link:
 [02_analysis_rbfe.ipynb](02_analysis_rbfe.ipynb)
-
-Alternatively, the contents of this workflow, including setup, production and analysis, can be run using our snakemake RBFE workflow. This workflow, along with a guide for deploying it at scale using SLURM, can be found here: https://github.com/OpenBioSim/rbfe_workflow
 
 

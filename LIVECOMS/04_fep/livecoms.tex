@@ -43,7 +43,8 @@ Next, \href{https://biosimspace.openbiosim.org/api/generated/BioSimSpace.Align.g
 \\
 Processing the entire TYK2 dataset involves setting up and running several hundred MD simulations of solvated ligands and protein-ligand complexes. This would be impractically slow if executed from a notebook on a single workstation. For convenience, we provide a sample \href{https://github.com/OpenBioSim/biosimspace_tutorials/blob/main/04_fep/02_RBFE/scripts/run_all_slurm.sh}{slurm submission script} that processes the setup, simulation and analysis of the entire network constructed by the RBFE setup notebook on an HPC environment. This script may be adjusted for deployment on different slurm clusters or as reference for the implementation of the execution model on different schedulers. The functionality covered by this notebook is illustrated in Figure \ref{rbfe_setup_fig}.
 \\
-
+Alternatively the full pipeline, including setup, minimisation, equilibration, production and analysis can be deployed using our \href{https://github.com/OpenBioSim/rbfe_workflow}{snakemake pipeline}. This pipeline can be deployed directly on local compute, or deployed within an HPC environment.
+\\
 \begin{figure}[htp]
 \includegraphics[width=\linewidth]{LIVECOMS/04_fep/rbfe-setup.png}
 \caption{ \textbf{A)} Schematic of the RBFE pipeline in this tutorial. Whereas blue boxes represent notebooks run on a local machine, orange boxes represent Python scripts run sequentially on a computing cluster.

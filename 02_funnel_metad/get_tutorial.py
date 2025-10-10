@@ -3,11 +3,11 @@ import requests, os
 links = {
     "01": (
         "inputs_01.tar.bz2",
-        "https://openbiosim-my.sharepoint.com/:u:/g/personal/director_openbiosim_org/Ed-8fipPSEFMt01VyyZQBBoBpviQb2k5pmzFsdBulaXXUQ?download=1",
+        "https://openbiosim.sharepoint.com/:u:/s/public/ESjwO8clK9xGg6q__fCfEk4BjoYclwD3xTBeXhd_Cc6iZQ?download=1",
     ),
     "02": (
         "inputs_02.tar.bz2",
-        "https://openbiosim-my.sharepoint.com/:u:/g/personal/director_openbiosim_org/ES8xuCuWe4dNop5fJeH1opEBoKG0qZZqLph5ZwMadKkJoQ?download=1",
+        "https://openbiosim.sharepoint.com/:u:/s/public/ESKt9qodhm9Hr767PMWH6VAB1UinRc_nfWzFTb6vcEYruQ?download=1",
     ),
 }
 
