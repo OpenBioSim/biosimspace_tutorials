@@ -7,11 +7,11 @@ links = {
     ),
     "02": (
         "output.tar.bz2",
-        "https://openbiosim.sharepoint.com/:u:/s/public/ET0OlDt1CAVPgf9X2J59rOcBCXcLZ3IHr1PiKriEaFGj8A?download=1",
+        "https://openbiosim.sharepoint.com/:u:/s/public/EbFoczNb57lOqzY9Q2_Us3UB7AkojHxgk2ZPPFxbkqjmNw?download=1",
     ),
     "03": (
         "example_output.tar.bz2",
-        "https://openbiosim.sharepoint.com/:u:/s/public/EbFoczNb57lOqzY9Q2_Us3UB7AkojHxgk2ZPPFxbkqjmNw?download=1",
+        "https://openbiosim.sharepoint.com/:u:/s/public/ET0OlDt1CAVPgf9X2J59rOcBCXcLZ3IHr1PiKriEaFGj8A?download=1",
     ),
 }
 
