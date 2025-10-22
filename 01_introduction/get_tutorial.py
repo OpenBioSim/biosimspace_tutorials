@@ -3,7 +3,7 @@ import requests, os
 links = {
     "01": (
         "inputs.tar.bz2",
-        "https://openbiosim-my.sharepoint.com/:u:/g/personal/director_openbiosim_org/EU3zvc0UmE1CqX0UKKR5hGIBtdF8Jj1-u8hol1XPwAEgKQ?download=1",
+        "https://openbiosim.sharepoint.com/:u:/s/public/EYUIL6WQCuBIhUnyH_YdTukBf6YMIU4iMi7OzDurBGq9gA?download=1",
     ),
 }
 

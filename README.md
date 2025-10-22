@@ -4,11 +4,11 @@ A suite of tutorials that provide an introduction to BioSimSpace, and examples o
 covering different scientific use cases. 
 These tutorials have been tested with BioSimSpace 2023.5.0 on a linux-64 platform and require the following dependencies
 
-* Gromacs (tested with 2023.1)
-* AmberTools (tested with 23.3) 
+* Gromacs (tested with 2025.3)
+* AmberTools (tested with 24.8) 
 * PLUMED (tested with 2.9.0)
-* cinnabar (tested with 0.3.0)
-* alchemlyb (tested with 1.0.1)
+* cinnabar (tested with 0.5.0)
+* alchemlyb (tested with 2.4.1)
 
 # Installation instructions
 
@@ -19,7 +19,7 @@ This route can be used to install the tutorials on a computer.
 We recommend using mamba to install the dependencies. 
 
 ```
-conda create -n  bsstutorials "python<3.11"
+conda create -n  bsstutorials "python<3.12"
 conda install -c conda-forge mamba
 mamba install -n bsstutorials -c openbiosim -c conda-forge biosimspace=2023.5.0 gromacs=2023.1 ambertools=23.3 plumed=2.9.0 cinnabar=0.3.0 pymbar=3 alchemlyb=1.0.1
 mamba activate bsstutorials

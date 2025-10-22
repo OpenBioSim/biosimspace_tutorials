@@ -3,15 +3,15 @@ import requests, os
 links = {
     "01": (
         "inputs.tar.bz2",
-        "https://openbiosim-my.sharepoint.com/:u:/g/personal/director_openbiosim_org/EfHshdM9FoVBvAXUp0x1zxMBcoGb4nNcfnSkkxfj51ij6g?download=1",
+        "https://openbiosim.sharepoint.com/:u:/s/public/EVlmB0LOdZ9FvFihBzMiUKwBBsHX0HxKQXMM3Si0t1_J7g?download=1",
     ),
     "02": (
         "analysis.tar.bz2",
-        "https://openbiosim-my.sharepoint.com/:u:/g/personal/director_openbiosim_org/EQ8kWX_hGy5PvzhqvnLWpMwBaqxd_Cd2ez5zEjFI0EfT2g?download=1",
+        "https://openbiosim.sharepoint.com/:u:/s/public/EQJayn0PWv9Nm_Ql8I2XEFUBm7Z4kkPAPDtYLDG0hmmiRQ?download=1",
     ),
     "03": (
         "example_output.tar.bz2",
-        "https://openbiosim-my.sharepoint.com/:u:/g/personal/director_openbiosim_org/EbPiCqbEriZCuhP0SMkRLX0BKdvODAkjIxPDtUf1t8CxmA?download=1",
+        "https://openbiosim.sharepoint.com/:u:/s/public/EVCa3MQvEM1Kvc2wTxxZQpgB5ujW1oS3h-c0-OCIS4eGaQ?download=1",
     ),
 }
 

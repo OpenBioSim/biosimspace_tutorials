@@ -3,19 +3,19 @@ import requests, os
 links = {
     "01": (
         "input.tar.bz2",
-        "https://openbiosim-my.sharepoint.com/:u:/g/personal/director_openbiosim_org/EeclcaEfAPlAjtMQzXo3QcIBnZOSX_lX9w81a6yKU6p-NQ?download=1",
+        "https://openbiosim.sharepoint.com/:u:/s/public/EcnpFE9iWiNNi1sGkV-ycwQBi42Pea5GPXDe9bEAl-paFw?download=1",
     ),
     "02": (
         "o_xylene_benzene_for_analysis.tar.bz2",
-        "https://openbiosim-my.sharepoint.com/:u:/g/personal/director_openbiosim_org/EYucKLAsmghNknd5914lCTQBC5uQL7fn0Fca_LeOfpaXcA?download=1",
+        "https://openbiosim.sharepoint.com/:u:/s/public/EUL_pvV_LfBKql8xljd3BSMBOf2inaY26ME1tgcWhJMKhg?download=1",
     ),
     "03": (
         "exercise_4_5.tar.bz2",
-        "https://openbiosim-my.sharepoint.com/:u:/g/personal/director_openbiosim_org/EcD3SVH8VHpMowLj9MvPWksBYWVAlvKLEV_W5g1R3c4n_Q?download=1",
+        "https://openbiosim.sharepoint.com/:u:/s/public/ESvbYVWgophJggIj-1ZwxRsBX-iMOMVGP-CEgDPcsQE0Hw?download=1",
     ),
     "04": (
         "example_output.tar.bz2",
-        "https://openbiosim-my.sharepoint.com/:u:/g/personal/director_openbiosim_org/EbXnbu36ozpFq1WNraQeeSQB6wQExM4rFkveOZVkh3dNyw?download=1",
+        "https://openbiosim.sharepoint.com/:u:/s/public/EY28QX9JEdlMoeBpZbGE_kcBWtK1Fsj1STFYzoe3lOOpJw?download=1",
     ),
 }
 
